@@ -1,0 +1,15 @@
+
+group 'io.xoana'
+version '2018.08'
+
+apply plugin: 'application'
+
+mainClassName = 'io.xoana.kraylib.Main'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "com.github.jnr:jnr-ffi:2.1.9"
+}
