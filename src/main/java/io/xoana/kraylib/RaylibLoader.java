@@ -1,16 +1,42 @@
 package io.xoana.kraylib;
 
 import jnr.ffi.LibraryLoader;
+import jnr.ffi.Runtime;
+import jnr.ffi.provider.FFIProvider;
 
 import java.io.*;
 
 public class RaylibLoader {
 
+	private static Raylib RAYLIB = null;
+	private static Runtime RUNTIME = null;
+
+	public static Runtime getRuntime() {
+		if(RUNTIME != null) {
+			return RUNTIME;
+		}
+		// Otherwise, init raylib.
+		load();
+		return RUNTIME;
+	}
+
+	public static Raylib getRaylib() {
+		if(RAYLIB != null) {
+			return RAYLIB;
+		}
+		return load();
+	}
+
 	/**
 	 * Copies raylib for the current target to a temporary store and invokes the library loader.
-	 * @return
+	 * Safe to call multiple times.  Will cache results.
+	 * @return Returns a reference to raylib for convenience.  Also modifies global static ref.
 	 */
-	public static Raylib load() throws IOException {
+	public static Raylib load() {
+		if(RAYLIB != null) {
+			return RAYLIB;
+		}
+
 		// Pick the correct resource for our system.
 		String nativeLibrary = "/raylib-2.0.0-Win64-mingw/lib/libraylib_shared.dll"; // TODO
 		String nativeLibraryExtension = ".dll";
@@ -20,17 +46,23 @@ public class RaylibLoader {
 		InputStream fin = RaylibLoader.class.getResourceAsStream(nativeLibrary);
 		if(fin == null) {
 			System.err.println("Failed to locate system native file in resources.");
-			throw new IOException();
+			System.exit(-1);
 		}
-		byte[] buffer = new byte[4096]; // Most new disks have 4096-byte chunks in the FS.
-		File temp = File.createTempFile(nativeLibraryPrefix + "raylib", nativeLibraryExtension);
-		FileOutputStream fout = new FileOutputStream(temp);
-		int bytesRead = -1;
-		while((bytesRead = fin.read(buffer)) != -1) {
-			fout.write(buffer);
+		File temp = null;
+		try {
+			byte[] buffer = new byte[4096]; // Most new disks have 4096-byte chunks in the FS.
+			temp = File.createTempFile(nativeLibraryPrefix + "raylib", nativeLibraryExtension);
+			FileOutputStream fout = new FileOutputStream(temp);
+			int bytesRead = -1;
+			while((bytesRead = fin.read(buffer)) != -1) {
+				fout.write(buffer);
+			}
+			fout.close();
+			fin.close();
+		} catch(IOException ioe) {
+			System.err.println("Failed to unpack raylib.  This can happen if there are no write permission to temp.");
+			System.exit(-1);
 		}
-		fout.close();
-		fin.close();
 
 		// temp.getPath now has the full path to the library.  Remove filename.
 		String loadPath = temp.getPath();
@@ -47,6 +79,14 @@ public class RaylibLoader {
 		// Invoke loader.
 		System.out.println("Trying to load raylib from " + loadPath + " with name " + loadName);
 		Raylib raylib = LibraryLoader.create(Raylib.class).search(loadPath).load(loadName);
+
+		if(raylib == null) {
+			// Do something crazy.
+		}
+		RAYLIB = raylib;
+		RUNTIME = Runtime.getRuntime(raylib);
+
+
 		return raylib;
 	}
 }
