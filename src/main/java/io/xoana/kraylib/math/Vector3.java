@@ -4,7 +4,7 @@ import jnr.ffi.Runtime;
 import jnr.ffi.Struct;
 
 public class Vector3 extends Struct {
-	protected Vector3(Runtime runtime) {
+	public Vector3(Runtime runtime) {
 		super(runtime);
 	}
 

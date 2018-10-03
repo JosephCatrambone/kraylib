@@ -1,13 +1,12 @@
 package io.xoana.kraylib.math;
 
-import io.xoana.kraylib.RaylibLoader;
 import jnr.ffi.Runtime;
 import jnr.ffi.Struct;
 
 // TODO: This should be an alias for Vector4
 public class Quaternion extends Struct {
-	protected Quaternion() {
-		super(RaylibLoader.getRuntime());
+	public Quaternion(Runtime runtime) {
+		super(runtime);
 	}
 
 	public final Float x = new Struct.Float();

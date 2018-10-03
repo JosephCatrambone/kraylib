@@ -5,9 +5,8 @@ import jnr.ffi.Runtime;
 import jnr.ffi.Struct;
 
 public class Matrix extends Struct {
-
-	public Matrix() {
-		super(RaylibLoader.getRuntime());
+	public Matrix(Runtime runtime) {
+		super(runtime);
 	}
 
 	// Matrix type (OpenGL style 4x4 - right handed, column major)

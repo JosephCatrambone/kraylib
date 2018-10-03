@@ -1,7 +1,9 @@
 package io.xoana.kraylib;
 
-import io.xoana.kraylib.graphics.Image;
-import jnr.ffi.LibraryLoader;
+import io.xoana.kraylib.graphics.*;
+import io.xoana.kraylib.math.*;
+import jnr.ffi.annotations.Out;
+import jnr.ffi.byref.IntByReference;
 
 public interface Raylib {
 	// CORE:
@@ -20,24 +22,24 @@ public interface Raylib {
 	int GetScreenWidth();                                               // Get current screen width
 	int GetScreenHeight();                                              // Get current screen height
 
-	/*
 	// Cursor-related functions
-	void ShowCursor(void);                                                  // Shows cursor
-	void HideCursor(void);                                                  // Hides cursor
-	boolean IsCursorHidden(void);                                              // Check if cursor is not visible
-	void EnableCursor(void);                                                // Enables cursor (unlock cursor)
-	void DisableCursor(void);                                               // Disables cursor (lock cursor)
+	void ShowCursor();                                                  // Shows cursor
+	void HideCursor();                                                  // Hides cursor
+	boolean IsCursorHidden();                                              // Check if cursor is not visible
+	void EnableCursor();                                                // Enables cursor (unlock cursor)
+	void DisableCursor();                                               // Disables cursor (lock cursor)
 
 	// Drawing-related functions
 	void ClearBackground(Color color);                                      // Set background color (framebuffer clear color)
-	void BeginDrawing(void);                                                // Setup canvas (framebuffer) to start drawing
-	void EndDrawing(void);                                                  // End canvas drawing and swap buffers (double buffering)
+	void BeginDrawing();                                                // Setup canvas (framebuffer) to start drawing
+	void EndDrawing();                                                  // End canvas drawing and swap buffers (double buffering)
 	void BeginMode2D(Camera2D camera);                                      // Initialize 2D mode with custom camera (2D)
-	void EndMode2D(void);                                                   // Ends 2D mode with custom camera
-	void BeginMode3D(Camera3D camera);                                      // Initializes 3D mode with custom camera (3D)
-	void EndMode3D(void);                                                   // Ends 3D mode and returns to default 2D orthographic mode
+	void EndMode2D();                                                   // Ends 2D mode with custom camera
+	void BeginMode3D(Camera camera);                                      // Initializes 3D mode with custom camera (3D)
+	void EndMode3D();                                                   // Ends 3D mode and returns to default 2D orthographic mode
 	void BeginTextureMode(RenderTexture2D target);                          // Initializes render texture for drawing
-	void EndTextureMode(void);                                              // Ends drawing to render texture
+	void EndTextureMode();                                              // Ends drawing to render texture
+
 
 	// Screen-space-related functions
 	Ray GetMouseRay(Vector2 mousePosition, Camera camera);                  // Returns a ray trace from mouse position
@@ -46,9 +48,9 @@ public interface Raylib {
 
 	// Timing-related functions
 	void SetTargetFPS(int fps);                                             // Set target FPS (maximum)
-	int GetFPS(void);                                                       // Returns current FPS
-	float GetFrameTime(void);                                               // Returns time in seconds for last frame drawn
-	double GetTime(void);                                                   // Returns elapsed time in seconds since InitWindow()
+	int GetFPS();                                                       // Returns current FPS
+	float GetFrameTime();                                               // Returns time in seconds for last frame drawn
+	double GetTime();                                                   // Returns elapsed time in seconds since InitWindow()
 
 	// Color-related functions
 	int ColorToInt(Color color);                                            // Returns hexadecimal value for a Color
@@ -58,10 +60,10 @@ public interface Raylib {
 	Color Fade(Color color, float alpha);                                   // Color fade-in or fade-out, alpha goes from 0.0f to 1.0f
 
 	// Misc. functions
-	void ShowLogo(void);                                                    // Activate raylib logo at startup (can be done with flags)
-	void SetConfigFlags(char flags);                               // Setup window configuration flags (view FLAGS)
-	void SetTraceLog(char types);                                  // Enable trace log message types (bit flags based)
-	void TraceLog(int logType, String text, ...);                      // Show trace log messages (LOG_INFO, LOG_WARNING, LOG_ERROR, LOG_DEBUG)
+	void ShowLogo();                                                    // Activate raylib logo at startup (can be done with flags)
+	void SetConfigFlags(byte flags);                               // Setup window configuration flags (view FLAGS)
+	void SetTraceLog(byte types);                                  // Enable trace log message types (bit flags based)
+	void TraceLog(int logType, String... text);                      // Show trace log messages (LOG_INFO, LOG_WARNING, LOG_ERROR, LOG_DEBUG)
 	void TakeScreenshot(String fileName);                              // Takes a screenshot of current screen (saved a .png)
 	int GetRandomValue(int min, int max);                                   // Returns a random value between min and max (both included)
 
@@ -70,12 +72,12 @@ public interface Raylib {
     String GetExtension(String fileName);                         // Get pointer to extension for a filename string
     String GetFileName(String filePath);                          // Get pointer to filename for a path string
     String GetDirectoryPath(String fileName);                     // Get full path for a given fileName (uses static string)
-    String GetWorkingDirectory(void);                                  // Get current working directory (uses static string)
+    String GetWorkingDirectory();                                  // Get current working directory (uses static string)
 	boolean ChangeDirectory(String dir);                                  // Change working directory, returns true if success
-	boolean IsFileDropped(void);                                               // Check if a file has been dropped into window
+	boolean IsFileDropped();                                               // Check if a file has been dropped into window
 	// char **GetDroppedFiles(int *count)
-	String[] GetDroppedFiles(Integer count);                                     // Get dropped files names
-	void ClearDroppedFiles(void);                                           // Clear dropped files paths buffer
+	//String[] GetDroppedFiles(@Out IntByReference count);                                     // Get dropped files names
+	void ClearDroppedFiles();                                           // Clear dropped files paths buffer
 
 	// Persistent storage management
 	void StorageSaveValue(int position, int value);                         // Save integer value to storage file (to defined position)
@@ -86,9 +88,9 @@ public interface Raylib {
 	boolean IsKeyDown(int key);                                                // Detect if a key is being pressed
 	boolean IsKeyReleased(int key);                                            // Detect if a key has been released once
 	boolean IsKeyUp(int key);                                                  // Detect if a key is NOT being pressed
-	int GetKeyPressed(void);                                                // Get latest key pressed
+	int GetKeyPressed();                                                // Get latest key pressed
 	void SetExitKey(int key);                                               // Set a custom key to exit program (default is ESC)
-
+	
 	// Input-related functions: gamepads
 	boolean IsGamepadAvailable(int gamepad);                                   // Detect if a gamepad is available
 	boolean IsGamepadName(int gamepad, String name);                      // Check gamepad name (if available)
@@ -97,7 +99,7 @@ public interface Raylib {
 	boolean IsGamepadButtonDown(int gamepad, int button);                      // Detect if a gamepad button is being pressed
 	boolean IsGamepadButtonReleased(int gamepad, int button);                  // Detect if a gamepad button has been released once
 	boolean IsGamepadButtonUp(int gamepad, int button);                        // Detect if a gamepad button is NOT being pressed
-	int GetGamepadButtonPressed(void);                                      // Get the last gamepad button pressed
+	int GetGamepadButtonPressed();                                      // Get the last gamepad button pressed
 	int GetGamepadAxisCount(int gamepad);                                   // Return gamepad axis count for a gamepad
 	float GetGamepadAxisMovement(int gamepad, int axis);                    // Return axis movement value for a gamepad axis
 
@@ -106,31 +108,32 @@ public interface Raylib {
 	boolean IsMouseButtonDown(int button);                                     // Detect if a mouse button is being pressed
 	boolean IsMouseButtonReleased(int button);                                 // Detect if a mouse button has been released once
 	boolean IsMouseButtonUp(int button);                                       // Detect if a mouse button is NOT being pressed
-	int GetMouseX(void);                                                    // Returns mouse position X
-	int GetMouseY(void);                                                    // Returns mouse position Y
-	Vector2 GetMousePosition(void);                                         // Returns mouse position XY
+	int GetMouseX();                                                    // Returns mouse position X
+	int GetMouseY();                                                    // Returns mouse position Y
+	Vector2 GetMousePosition();                                         // Returns mouse position XY
 	void SetMousePosition(Vector2 position);                                // Set mouse position XY
-	int GetMouseWheelMove(void);                                            // Returns mouse wheel movement Y
+	int GetMouseWheelMove();                                            // Returns mouse wheel movement Y
 
 	// Input-related functions: touch
-	int GetTouchX(void);                                                    // Get touch position X for touch point 0 (relative to screen size)
-	int GetTouchY(void);                                                    // Get touch position Y for touch point 0 (relative to screen size)
+	int GetTouchX();                                                    // Get touch position X for touch point 0 (relative to screen size)
+	int GetTouchY();                                                    // Get touch position Y for touch point 0 (relative to screen size)
 	Vector2 GetTouchPosition(int index);                                    // Get touch position XY for a touch point index (relative to screen size)
 
 	// Gestures-related functions
 	void SetGesturesEnabled(int gestureFlags);                     // Enable a set of gestures using flags
 	boolean IsGestureDetected(int gesture);                                    // Check if a gesture have been detected
-	int GetGestureDetected(void);                                           // Get latest detected gesture
-	int GetTouchPointsCount(void);                                          // Get touch points count
-	float GetGestureHoldDuration(void);                                     // Get gesture hold time in milliseconds
-	Vector2 GetGestureDragVector(void);                                     // Get gesture drag vector
-	float GetGestureDragAngle(void);                                        // Get gesture drag angle
-	Vector2 GetGesturePinchVector(void);                                    // Get gesture pinch delta
-	float GetGesturePinchAngle(void);                                       // Get gesture pinch angle
+	int GetGestureDetected();                                           // Get latest detected gesture
+	int GetTouchPointsCount();                                          // Get touch points count
+	float GetGestureHoldDuration();                                     // Get gesture hold time in milliseconds
+	Vector2 GetGestureDragVector();                                     // Get gesture drag vector
+	float GetGestureDragAngle();                                        // Get gesture drag angle
+	Vector2 GetGesturePinchVector();                                    // Get gesture pinch delta
+	float GetGesturePinchAngle();                                       // Get gesture pinch angle
 
 	// Camera-related functions
 	void SetCameraMode(Camera camera, int mode);                            // Set camera mode (multiple camera modes available)
-	void UpdateCamera(Camera *camera);                                      // Update camera position for selected mode
+	//TODO: void UpdateCamera(Camera *camera)
+	void UpdateCamera(Camera camera);                                      // Update camera position for selected mode
 	void SetCameraPanControl(int panKey);                                   // Set camera pan key to combine with mouse movement (free camera)
 	void SetCameraAltControl(int altKey);                                   // Set camera alt key to combine with mouse movement (free camera)
 	void SetCameraSmoothZoomControl(int szKey);                             // Set camera smooth zoom key to combine with mouse (free camera)
@@ -162,8 +165,10 @@ public interface Raylib {
 	void DrawTriangle(Vector2 v1, Vector2 v2, Vector2 v3, Color color);                                 // Draw a color-filled triangle
 	void DrawTriangleLines(Vector2 v1, Vector2 v2, Vector2 v3, Color color);                            // Draw triangle outline
 	void DrawPoly(Vector2 center, int sides, float radius, float rotation, Color color);                // Draw a regular polygon (Vector version)
-	void DrawPolyEx(Vector2 *points, int numPoints, Color color);                                       // Draw a closed polygon defined by points
-	void DrawPolyExLines(Vector2 *points, int numPoints, Color color);                                  // Draw polygon lines
+	//TODO: void DrawPolyEx(Vector2 *points, int numPoints, Color color);
+	void DrawPolyEx(Vector2[] points, int numPoints, Color color);                                       // Draw a closed polygon defined by points
+	//TODO: void DrawPolyExLines(Vector2 *points, int numPoints, Color color);
+	void DrawPolyExLines(Vector2[] points, int numPoints, Color color);                                  // Draw polygon lines
 
 	// Basic shapes collision detection functions
 	boolean CheckCollisionRecs(Rectangle rec1, Rectangle rec2);                                            // Check collision between two rectangles
@@ -174,6 +179,7 @@ public interface Raylib {
 	boolean CheckCollisionPointCircle(Vector2 point, Vector2 center, float radius);                        // Check if point is inside circle
 	boolean CheckCollisionPointTriangle(Vector2 point, Vector2 p1, Vector2 p2, Vector2 p3);                // Check if point is inside a triangle
 
+	/*
 	// TEXTURE
 	// Image/Texture2D data loading/unloading/saving functions
 	Image LoadImage(String fileName);                                                              // Load image from file into CPU memory (RAM)
@@ -439,11 +445,9 @@ public interface Raylib {
 	*/
 
 	/*
-	struct Image;           // Image type (multiple data formats supported)
 	// NOTE: Data stored in CPU memory (RAM)
 	struct Texture;         // Texture type (multiple internal formats supported)
-	// NOTE: Data stored in GPU memory (VRAM)
-	struct RenderTexture;   // RenderTexture type, for texture rendering
+
 	struct CharInfo;        // Font character info
 	struct Font;            // Font type, includes texture and chars data
 

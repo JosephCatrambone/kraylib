@@ -5,8 +5,8 @@ import jnr.ffi.Runtime;
 import jnr.ffi.Struct;
 
 public class RayHitInfo extends Struct {
-	public RayHitInfo() {
-		super(RaylibLoader.getRuntime());
+	public RayHitInfo(Runtime runtime) {
+		super(runtime);
 	}
 
 	public final Unsigned8 hit = new Unsigned8();

@@ -2,11 +2,12 @@ package io.xoana.kraylib.graphics;
 
 import io.xoana.kraylib.RaylibLoader;
 import io.xoana.kraylib.math.Vector3;
+import jnr.ffi.Runtime;
 import jnr.ffi.Struct;
 
 public class Camera extends Struct {
-	protected Camera() {
-		super(RaylibLoader.getRuntime());
+	public Camera(Runtime runtime) {
+		super(runtime);
 	}
 
 	public final StructRef<Vector3> position = new StructRef<Vector3>(Vector3.class);

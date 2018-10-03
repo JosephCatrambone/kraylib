@@ -1,6 +1,5 @@
 package io.xoana.kraylib.graphics;
 
-import com.kenai.jffi.Closure;
 import io.xoana.kraylib.RaylibLoader;
 import jnr.ffi.Runtime;
 import jnr.ffi.Struct;
@@ -8,11 +7,12 @@ import jnr.ffi.Struct;
 import java.nio.ByteBuffer;
 
 public class Image extends Struct {
-	public Image() {
-		super(RaylibLoader.getRuntime());
+	public Image(Runtime runtime) {
+		super(runtime);
 	}
 
 	// Does this need to be final?
+	// TODO: Make sure the data buffer is correct.
 	public ByteBuffer data = null; // Image raw data
 	public final Signed32 width = new Signed32();              // Image base width
 	public final Signed32 height = new Signed32();             // Image base height
