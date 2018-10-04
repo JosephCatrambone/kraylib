@@ -6,6 +6,7 @@ import jnr.ffi.Pointer;
 import jnr.ffi.annotations.In;
 import jnr.ffi.annotations.Out;
 import jnr.ffi.byref.IntByReference;
+import jnr.ffi.types.u_int32_t;
 
 import java.nio.Buffer;
 
@@ -34,12 +35,13 @@ public interface Raylib {
 	void DisableCursor();                                               // Disables cursor (lock cursor)
 
 	// Drawing-related functions
-	void ClearBackground(Color color);                                      // Set background color (framebuffer clear color)
+	void ClearBackground(@u_int32_t int color);
+	void ClearBackground(@In Color color);                                      // Set background color (framebuffer clear color)
 	void BeginDrawing();                                                // Setup canvas (framebuffer) to start drawing
 	void EndDrawing();                                                  // End canvas drawing and swap buffers (double buffering)
-	void BeginMode2D(Camera2D camera);                                      // Initialize 2D mode with custom camera (2D)
+	void BeginMode2D(@In Camera2D camera);                                      // Initialize 2D mode with custom camera (2D)
 	void EndMode2D();                                                   // Ends 2D mode with custom camera
-	void BeginMode3D(Camera camera);                                      // Initializes 3D mode with custom camera (3D)
+	void BeginMode3D(@In Camera camera);                                      // Initializes 3D mode with custom camera (3D)
 	void EndMode3D();                                                   // Ends 3D mode and returns to default 2D orthographic mode
 	void BeginTextureMode(RenderTexture2D target);                          // Initializes render texture for drawing
 	void EndTextureMode();                                              // Ends drawing to render texture
@@ -80,7 +82,7 @@ public interface Raylib {
 	boolean ChangeDirectory(String dir);                                  // Change working directory, returns true if success
 	boolean IsFileDropped();                                               // Check if a file has been dropped into window
 	// char **GetDroppedFiles(int *count)
-	//String[] GetDroppedFiles(@Out IntByReference count);                                     // Get dropped files names
+	Pointer GetDroppedFiles(@Out IntByReference count);                                     // Get dropped files names
 	void ClearDroppedFiles();                                           // Clear dropped files paths buffer
 
 	// Persistent storage management
@@ -136,7 +138,6 @@ public interface Raylib {
 
 	// Camera-related functions
 	void SetCameraMode(Camera camera, int mode);                            // Set camera mode (multiple camera modes available)
-	//TODO: void UpdateCamera(Camera *camera)
 	void UpdateCamera(Camera camera);                                      // Update camera position for selected mode
 	void SetCameraPanControl(int panKey);                                   // Set camera pan key to combine with mouse movement (free camera)
 	void SetCameraAltControl(int altKey);                                   // Set camera alt key to combine with mouse movement (free camera)

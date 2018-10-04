@@ -1,9 +1,7 @@
 package io.xoana.kraylib;
 
 import io.xoana.kraylib.graphics.*;
-import io.xoana.kraylib.math.*;
-
-import java.io.IOException;
+import jnr.ffi.Struct;
 
 public class Main {
 	public static void main(String[] args) {
@@ -12,18 +10,12 @@ public class Main {
 
 		int frame = 0;
 		Color bg = new Color(0, 0, 0, 255);
+		System.out.println(Struct.size(bg));
 
 		while(!raylib.WindowShouldClose()) {
 			raylib.BeginDrawing();
-				raylib.ClearBackground(bg);
+				raylib.ClearBackground(bg.toInt());
 			raylib.EndDrawing();
-
-			frame++;
-			if(frame % 100 == 0) {
-				Vector4 normColor = raylib.ColorNormalize(bg);
-				System.out.println(normColor.x + ", " + normColor.y + ", " + normColor.z + ", " + normColor.w);
-
-			}
 			Thread.yield();
 		}
 
