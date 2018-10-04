@@ -2,8 +2,12 @@ package io.xoana.kraylib;
 
 import io.xoana.kraylib.graphics.*;
 import io.xoana.kraylib.math.*;
+import jnr.ffi.Pointer;
+import jnr.ffi.annotations.In;
 import jnr.ffi.annotations.Out;
 import jnr.ffi.byref.IntByReference;
+
+import java.nio.Buffer;
 
 public interface Raylib {
 	// CORE:
@@ -179,12 +183,13 @@ public interface Raylib {
 	boolean CheckCollisionPointCircle(Vector2 point, Vector2 center, float radius);                        // Check if point is inside circle
 	boolean CheckCollisionPointTriangle(Vector2 point, Vector2 p1, Vector2 p2, Vector2 p3);                // Check if point is inside a triangle
 
-	/*
 	// TEXTURE
 	// Image/Texture2D data loading/unloading/saving functions
-	Image LoadImage(String fileName);                                                              // Load image from file into CPU memory (RAM)
-	Image LoadImageEx(Color *pixels, int width, int height);                                            // Load image from Color array data (RGBA - 32bit)
-	Image LoadImagePro(void *data, int width, int height, int format);                                  // Load image from raw data with parameters
+	Image LoadImage(String fileName);  // Load image from file into CPU memory (RAM)
+	// Color*
+	Image LoadImageEx(Color[] pixels, int width, int height);  // Load image from Color array data (RGBA - 32bit)
+	// void*
+	Image LoadImagePro(Buffer data, int width, int height, int format);  // Load image from raw data with parameters
 	Image LoadImageRaw(String fileName, int width, int height, int format, int headerSize);        // Load image from RAW file data
 	void ExportImage(String fileName, Image image);                                                // Export image as a PNG file
 	Texture2D LoadTexture(String fileName);                                                        // Load texture from file into GPU memory (VRAM)
@@ -193,44 +198,46 @@ public interface Raylib {
 	void UnloadImage(Image image);                                                                      // Unload image from CPU memory (RAM)
 	void UnloadTexture(Texture2D texture);                                                              // Unload texture from GPU memory (VRAM)
 	void UnloadRenderTexture(RenderTexture2D target);                                                   // Unload render texture from GPU memory (VRAM)
-	Color *GetImageData(Image image);                                                                   // Get pixel data from image as a Color struct array
-	Vector4 *GetImageDataNormalized(Image image);                                                       // Get pixel data from image as Vector4 array (float normalized)
+	// Color*
+	Pointer GetImageData(Image image);                                                                   // Get pixel data from image as a Color struct array
+	// Vector4*
+	Pointer GetImageDataNormalized(Image image);                                                       // Get pixel data from image as Vector4 array (float normalized)
 	int GetPixelDataSize(int width, int height, int format);                                            // Get pixel data size in bytes (image or texture)
 	Image GetTextureData(Texture2D texture);                                                            // Get pixel data from GPU texture and return an Image
-	void UpdateTexture(Texture2D texture, const void *pixels);                                          // Update GPU texture with new data
+	void UpdateTexture(Texture2D texture, Buffer pixels);                                          // Update GPU texture with new data
 
 	// Image manipulation functions
-	Image ImageCopy(Image image);                                                                       // Create an image duplicate (useful for transformations)
-	void ImageToPOT(Image *image, Color fillColor);                                                     // Convert image to POT (power-of-two)
-	void ImageFormat(Image *image, int newFormat);                                                      // Convert image data to desired format
-	void ImageAlphaMask(Image *image, Image alphaMask);                                                 // Apply alpha mask to image
-	void ImageAlphaClear(Image *image, Color color, float threshold);                                   // Clear alpha channel to desired color
-	void ImageAlphaCrop(Image *image, float threshold);                                                 // Crop image depending on alpha value
-	void ImageAlphaPremultiply(Image *image);                                                           // Premultiply alpha channel
-	void ImageCrop(Image *image, Rectangle crop);                                                       // Crop an image to a defined rectangle
-	void ImageResize(Image *image, int newWidth, int newHeight);                                        // Resize image (bilinear filtering)
-	void ImageResizeNN(Image *image, int newWidth,int newHeight);                                       // Resize image (Nearest-Neighbor scaling algorithm)
-	void ImageResizeCanvas(Image *image, int newWidth, int newHeight,
+	Image ImageCopy(@In Image image);                                                                       // Create an image duplicate (useful for transformations)
+	void ImageToPOT(Image image, Color fillColor);                                                     // Convert image to POT (power-of-two)
+	void ImageFormat(Image image, int newFormat);                                                      // Convert image data to desired format
+	void ImageAlphaMask(Image image, Image alphaMask);                                                 // Apply alpha mask to image
+	void ImageAlphaClear(Image image, Color color, float threshold);                                   // Clear alpha channel to desired color
+	void ImageAlphaCrop(Image image, float threshold);                                                 // Crop image depending on alpha value
+	void ImageAlphaPremultiply(Image image);                                                           // Premultiply alpha channel
+	void ImageCrop(Image image, Rectangle crop);                                                       // Crop an image to a defined rectangle
+	void ImageResize(Image image, int newWidth, int newHeight);                                        // Resize image (bilinear filtering)
+	void ImageResizeNN(Image image, int newWidth, int newHeight);                                       // Resize image (Nearest-Neighbor scaling algorithm)
+	void ImageResizeCanvas(Image image, int newWidth, int newHeight,
 						   int offsetX, int offsetY, Color color);                                      // Resize canvas and fill with color
-	void ImageMipmaps(Image *image);                                                                    // Generate all mipmap levels for a provided image
-	void ImageDither(Image *image, int rBpp, int gBpp, int bBpp, int aBpp);                             // Dither image data to 16bpp or lower (Floyd-Steinberg dithering)
+	void ImageMipmaps(Image image);                                                                    // Generate all mipmap levels for a provided image
+	void ImageDither(Image image, int rBpp, int gBpp, int bBpp, int aBpp);                             // Dither image data to 16bpp or lower (Floyd-Steinberg dithering)
 	Image ImageText(String text, int fontSize, Color color);                                       // Create an image from text (default font)
 	Image ImageTextEx(Font font, String text, float fontSize, float spacing, Color tint);          // Create an image from text (custom sprite font)
-	void ImageDraw(Image *dst, Image src, Rectangle srcRec, Rectangle dstRec);                          // Draw a source image within a destination image
-	void ImageDrawRectangle(Image *dst, Vector2 position, Rectangle rec, Color color);                  // Draw rectangle within an image
-	void ImageDrawText(Image *dst, Vector2 position, String text, int fontSize, Color color);      // Draw text (default font) within an image (destination)
-	void ImageDrawTextEx(Image *dst, Vector2 position, Font font, String text,
+	void ImageDraw(Image dst, Image src, Rectangle srcRec, Rectangle dstRec);                          // Draw a source image within a destination image
+	void ImageDrawRectangle(Image dst, Vector2 position, Rectangle rec, Color color);                  // Draw rectangle within an image
+	void ImageDrawText(Image dst, Vector2 position, String text, int fontSize, Color color);      // Draw text (default font) within an image (destination)
+	void ImageDrawTextEx(Image dst, Vector2 position, Font font, String text,
 						 float fontSize, float spacing, Color color);                                   // Draw text (custom sprite font) within an image (destination)
-	void ImageFlipVertical(Image *image);                                                               // Flip image vertically
-	void ImageFlipHorizontal(Image *image);                                                             // Flip image horizontally
-	void ImageRotateCW(Image *image);                                                                   // Rotate image clockwise 90deg
-	void ImageRotateCCW(Image *image);                                                                  // Rotate image counter-clockwise 90deg
-	void ImageColorTint(Image *image, Color color);                                                     // Modify image color: tint
-	void ImageColorInvert(Image *image);                                                                // Modify image color: invert
-	void ImageColorGrayscale(Image *image);                                                             // Modify image color: grayscale
-	void ImageColorContrast(Image *image, float contrast);                                              // Modify image color: contrast (-100 to 100)
-	void ImageColorBrightness(Image *image, int brightness);                                            // Modify image color: brightness (-255 to 255)
-	void ImageColorReplace(Image *image, Color color, Color replace);                                   // Modify image color: replace color
+	void ImageFlipVertical(Image image);                                                               // Flip image vertically
+	void ImageFlipHorizontal(Image image);                                                             // Flip image horizontally
+	void ImageRotateCW(Image image);                                                                   // Rotate image clockwise 90deg
+	void ImageRotateCCW(Image image);                                                                  // Rotate image counter-clockwise 90deg
+	void ImageColorTint(Image image, Color color);                                                     // Modify image color: tint
+	void ImageColorInvert(Image image);                                                                // Modify image color: invert
+	void ImageColorGrayscale(Image image);                                                             // Modify image color: grayscale
+	void ImageColorContrast(Image image, float contrast);                                              // Modify image color: contrast (-100 to 100)
+	void ImageColorBrightness(Image image, int brightness);                                            // Modify image color: brightness (-255 to 255)
+	void ImageColorReplace(Image image, Color color, Color replace);                                   // Modify image color: replace color
 
 	// Image generation functions
 	Image GenImageColor(int width, int height, Color color);                                            // Generate image: plain color
@@ -243,7 +250,7 @@ public interface Raylib {
 	Image GenImageCellular(int width, int height, int tileSize);                                        // Generate image: cellular algorithm. Bigger tileSize means bigger cells
 
 	// Texture2D configuration functions
-	void GenTextureMipmaps(Texture2D *texture);                                                         // Generate GPU mipmaps for a texture
+	void GenTextureMipmaps(Texture2D texture);                                                         // Generate GPU mipmaps for a texture
 	void SetTextureFilter(Texture2D texture, int filterMode);                                           // Set texture scaling filter mode
 	void SetTextureWrap(Texture2D texture, int wrapMode);                                               // Set texture wrapping mode
 
@@ -257,25 +264,26 @@ public interface Raylib {
 
 	// TEXT
 	// Font loading/unloading functions
-	Font GetFontDefault(void);                                                                        // Get the default Font
+	Font GetFontDefault();                                                                        // Get the default Font
 	Font LoadFont(String fileName);                                                              // Load font from file into GPU memory (VRAM)
-	Font LoadFontEx(String fileName, int fontSize, int charsCount, int *fontChars);              // Load font from file with extended parameters
-	CharInfo *LoadFontData(String fileName, int fontSize, int *fontChars, int charsCount, boolean sdf); // Load font data for further use
-	Image GenImageFontAtlas(CharInfo *chars, int fontSize, int charsCount, int padding, int packMethod);  // Generate image font atlas using chars info
+	Font LoadFontEx(String fileName, int fontSize, int charsCount, int[] fontChars);              // Load font from file with extended parameters
+	//CharInfo *LoadFontData(String fileName, int fontSize, int *fontChars, int charsCount, boolean sdf); // Load font data for further use
+	Image GenImageFontAtlas(CharInfo[] chars, int fontSize, int charsCount, int padding, int packMethod);  // Generate image font atlas using chars info
 	void UnloadFont(Font font);                                                                       // Unload Font from GPU memory (VRAM)
 
 	// Text drawing functions
 	void DrawFPS(int posX, int posY);                                                                 // Shows current FPS
 	void DrawText(String text, int posX, int posY, int fontSize, Color color);                   // Draw text (using default font)
-	void DrawTextEx(Font font, const char* text, Vector2 position, float fontSize, float spacing, Color tint); // Draw text using font and additional parameters
+	void DrawTextEx(Font font, String text, Vector2 position, float fontSize, float spacing, Color tint); // Draw text using font and additional parameters
 
 	// Text misc. functions
 	int MeasureText(String text, int fontSize);                                                  // Measure string width for default font
 	Vector2 MeasureTextEx(Font font, String text, float fontSize, float spacing);                // Measure string size for Font
-    String FormatText(String text, ...);                                                    // Formatting of text with variables to 'embed'
+    String FormatText(String... text);                                                    // Formatting of text with variables to 'embed'
     String SubText(String text, int position, int length);                                  // Get a piece of a text string
 	int GetGlyphIndex(Font font, int character);                                                      // Get index position for a unicode character on font
 
+	/*
 	// MODELS
 	// Basic geometric 3D shapes drawing functions
 	void DrawLine3D(Vector3 startPos, Vector3 endPos, Color color);                                     // Draw a line in 3D world space
@@ -445,14 +453,6 @@ public interface Raylib {
 	*/
 
 	/*
-	// NOTE: Data stored in CPU memory (RAM)
-	struct Texture;         // Texture type (multiple internal formats supported)
-
-	struct CharInfo;        // Font character info
-	struct Font;            // Font type, includes texture and chars data
-
-	struct Camera;          // Camera type, defines 3d camera position/orientation
-	struct Camera2D;        // Camera2D type, defines a 2d camera
 	struct Mesh;            // Vertex data definning a mesh
 	struct Shader;          // Shader type (generic shader)
 	struct MaterialMap;     // Material texture map

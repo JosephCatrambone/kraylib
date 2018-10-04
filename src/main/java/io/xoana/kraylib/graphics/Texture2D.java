@@ -4,7 +4,7 @@ import jnr.ffi.Runtime;
 import jnr.ffi.Struct;
 
 public class Texture2D extends Struct {
-	protected Texture2D(Runtime runtime) {
+	public Texture2D(Runtime runtime) {
 		super(runtime);
 	}
 
