@@ -1,24 +1,21 @@
 package io.xoana.kraylib;
 
-import io.xoana.kraylib.graphics.*;
-import jnr.ffi.Struct;
-
 public class Main {
 	public static void main(String[] args) {
-		Raylib raylib = RaylibLoader.load();
-		raylib.InitWindow(640, 480, "Success!");
+		RaylibLoader.load();
+		Raylib.InitWindow(640, 480, "Success!");
 
 		int frame = 0;
-		Color bg = new Color(0, 0, 0, 255);
-		System.out.println(Struct.size(bg));
+		Color bg = new Color();
+		bg.setG((short)255);
 
-		while(!raylib.WindowShouldClose()) {
-			raylib.BeginDrawing();
-				raylib.ClearBackground(bg.toInt());
-			raylib.EndDrawing();
+		while(!Raylib.WindowShouldClose()) {
+			Raylib.BeginDrawing();
+				Raylib.ClearBackground(bg);
+			Raylib.EndDrawing();
 			Thread.yield();
 		}
 
-		raylib.CloseWindow();
+		Raylib.CloseWindow();
 	}
 }
