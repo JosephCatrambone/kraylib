@@ -1,21 +1,24 @@
 package io.xoana.kraylib.graphics;
 
-import io.xoana.kraylib.RaylibLoader;
-import jnr.ffi.Runtime;
-import jnr.ffi.Struct;
 
-import java.nio.ByteBuffer;
+import com.sun.jna.Pointer;
+import com.sun.jna.Structure;
 
-public class Image extends Struct {
-	public Image(Runtime runtime) {
-		super(runtime);
+import java.util.Arrays;
+import java.util.List;
+
+public class Image extends Structure implements Structure.ByReference, Structure.ByValue {
+	public Pointer data;  // Image raw data // TODO: Can this be byte[]?
+	public int width;  // Image base width
+	public int height;  // Image base height
+	public int mipmaps = 1;  // Mipmap levels, 1 by default
+	public int format;  // Data format (PixelFormat type)
+
+	//public class ByReference extends Color implements Structure.ByReference {}
+	//public class ByValue extends Color implements Structure.ByValue {}
+
+	@Override
+	protected List<String> getFieldOrder() {
+		return Arrays.asList("data", "width", "height", "mipmaps", "format");
 	}
-
-	// Does this need to be final?
-	// TODO: Make sure the data buffer is correct.
-	public ByteBuffer data = null; // Image raw data
-	public final Signed32 width = new Signed32();              // Image base width
-	public final Signed32 height = new Signed32();             // Image base height
-	public final Signed32 mipmaps = new Signed32(); // Mipmap levels, 1 by default
-	public final Signed32 format = new Signed32(); // Data format (PixelFormat type)
 }

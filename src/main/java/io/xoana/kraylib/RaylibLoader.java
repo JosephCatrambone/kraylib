@@ -1,44 +1,19 @@
 package io.xoana.kraylib;
 
-import jnr.ffi.LibraryLoader;
-import jnr.ffi.Runtime;
-import jnr.ffi.provider.FFIProvider;
+import com.sun.jna.Native;
+import com.sun.jna.NativeLibrary;
 
 import java.io.*;
 
 public class RaylibLoader {
-
-	private static Raylib RAYLIB = null;
-	private static Runtime RUNTIME = null;
-
-	public static Runtime getRuntime() {
-		if(RUNTIME != null) {
-			return RUNTIME;
-		}
-		// Otherwise, init raylib.
-		load();
-		return RUNTIME;
-	}
-
-	public static Raylib getRaylib() {
-		if(RAYLIB != null) {
-			return RAYLIB;
-		}
-		return load();
-	}
-
 	/**
 	 * Copies raylib for the current target to a temporary store and invokes the library loader.
 	 * Safe to call multiple times.  Will cache results.
 	 * @return Returns a reference to raylib for convenience.  Also modifies global static ref.
 	 */
 	public static Raylib load() {
-		if(RAYLIB != null) {
-			return RAYLIB;
-		}
-
 		// Pick the correct resource for our system.
-		String nativeLibrary = "/raylib-2.0.0-Win64-mingw/lib/libraylib_shared.dll"; // TODO
+		String nativeLibrary = "/lib/windows64/libraylib_shared.dll"; // TODO: Multiplatform.
 		String nativeLibraryExtension = ".dll";
 		String nativeLibraryPrefix = ""; // Linux has "lib" prefix.
 
@@ -78,14 +53,10 @@ public class RaylibLoader {
 
 		// Invoke loader.
 		System.out.println("Trying to load raylib from " + loadPath + " with name " + loadName);
-		Raylib raylib = LibraryLoader.create(Raylib.class).search(loadPath).load(loadName);
-
-		if(raylib == null) {
-			// Do something crazy.
-		}
-		RAYLIB = raylib;
-		RUNTIME = Runtime.getRuntime(raylib);
-
+		NativeLibrary.addSearchPath(loadName, loadPath);
+		Raylib raylib = Native.loadLibrary(loadName, Raylib.class);
+		// TODO: JNA supports unpacking from JAR.
+		//Raylib raylib = LibraryLoader.create(Raylib.class).search(loadPath).load(loadName);
 
 		return raylib;
 	}

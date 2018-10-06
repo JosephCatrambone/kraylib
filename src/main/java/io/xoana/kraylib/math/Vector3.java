@@ -1,14 +1,32 @@
 package io.xoana.kraylib.math;
 
-import jnr.ffi.Runtime;
-import jnr.ffi.Struct;
+import com.sun.jna.Structure;
 
-public class Vector3 extends Struct {
-	public Vector3(Runtime runtime) {
-		super(runtime);
+import java.util.Arrays;
+import java.util.List;
+
+public class Vector3 extends Structure implements Structure.ByReference, Structure.ByValue {
+	public float x;
+	public float y;
+	public float z;
+
+	//public class ByReference extends Color implements Structure.ByReference {}
+	//public class ByValue extends Color implements Structure.ByValue {}
+
+	public Vector3(float x, float y, float z) {
+		this.x = x;
+		this.y = y;
+		this.z = z;
 	}
 
-	public final Float x = new Float();
-	public final Float y = new Float();
-	public final Float z = new Float();
+	public Vector3() {
+		x = 0f;
+		y = 0f;
+		z = 0f;
+	}
+
+	@Override
+	protected List<String> getFieldOrder() {
+		return Arrays.asList("x", "y", "z");
+	}
 }

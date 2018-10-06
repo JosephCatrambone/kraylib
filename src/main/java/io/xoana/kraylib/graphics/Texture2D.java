@@ -1,16 +1,20 @@
 package io.xoana.kraylib.graphics;
 
-import jnr.ffi.Runtime;
-import jnr.ffi.Struct;
 
-public class Texture2D extends Struct {
-	public Texture2D(Runtime runtime) {
-		super(runtime);
+import com.sun.jna.Structure;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class Texture2D extends Structure implements Structure.ByReference, Structure.ByValue {
+	public int id;
+	public int width;  // Image base width
+	public int height;  // Image base height
+	public int mipmaps = 1;  // Mipmap levels, 1 by default
+	public int format;  // Data format (PixelFormat type)
+
+	@Override
+	protected List<String> getFieldOrder() {
+		return Arrays.asList("id", "width", "height", "mipmaps", "format");
 	}
-
-	public final Unsigned32 id = new Unsigned32(); // OpenGL texture id
-	public final Signed32 width = new Signed32(); // Texture base width
-	public final Signed32 height = new Signed32(); // Texture base height
-	public final Signed32 mipmaps = new Signed32(); // Mipmap levels, 1 by default
-	public final Signed32 format = new Signed32(); // Data format (PixelFormat type)
 }

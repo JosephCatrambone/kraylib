@@ -1,14 +1,16 @@
 package io.xoana.kraylib.math;
 
-import io.xoana.kraylib.RaylibLoader;
-import jnr.ffi.Runtime;
-import jnr.ffi.Struct;
+import com.sun.jna.Structure;
 
-public class Ray extends Struct {
-	public Ray(Runtime runtime) {
-		super(runtime);
+import java.util.Arrays;
+import java.util.List;
+
+public class Ray extends Structure implements Structure.ByReference, Structure.ByValue {
+	public Vector3.ByValue position = new Vector3();
+	public Vector3.ByValue direction = new Vector3();
+
+	@Override
+	protected List<String> getFieldOrder() {
+		return Arrays.asList("position", "direction");
 	}
-
-	public final StructRef<Vector3> position = new StructRef<Vector3>(Vector3.class);
-	public final StructRef<Vector3> direction = new StructRef<Vector3>(Vector3.class);
 }
