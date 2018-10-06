@@ -1,16 +1,20 @@
 package io.xoana.kraylib.graphics;
 
-import jnr.ffi.Runtime;
-import jnr.ffi.Struct;
 
-public class Font extends Struct {
-	public Font(Runtime runtime) {
-		super(runtime);
+import com.sun.jna.Pointer;
+import com.sun.jna.Structure;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class Font extends Structure implements Structure.ByReference, Structure.ByValue {
+	public Texture2D.ByValue texture = null;
+	public int baseSize = 0;  // Base size (default chars height)
+	public int charsCount = 0;  // Number of characters
+	public Pointer chars = null;  // Characters info data
+
+	@Override
+	protected List<String> getFieldOrder() {
+		return Arrays.asList("texture", "baseSize", "charsCount", "chars");
 	}
-
-	public final StructRef<Texture2D> texture = new StructRef<>(Texture2D.class);  // Font texture
-	public final Signed32 baseSize = new Signed32();  // Base size (default chars height)
-	public final Signed32 charsCount = new Signed32();  // Number of characters
-	// CharInfo*
-	public final Pointer chars = new Pointer();  // Characters info data
 }

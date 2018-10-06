@@ -11,5 +11,5 @@ repositories {
 }
 
 dependencies {
-    compile "com.github.jnr:jnr-ffi:2.1.9"
+    compile "net.java.dev.jna:jna:4.5.2"
 }

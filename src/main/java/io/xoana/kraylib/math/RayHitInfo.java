@@ -1,16 +1,18 @@
 package io.xoana.kraylib.math;
 
-import io.xoana.kraylib.RaylibLoader;
-import jnr.ffi.Runtime;
-import jnr.ffi.Struct;
+import com.sun.jna.Structure;
 
-public class RayHitInfo extends Struct {
-	public RayHitInfo(Runtime runtime) {
-		super(runtime);
+import java.util.Arrays;
+import java.util.List;
+
+public class RayHitInfo extends Structure implements Structure.ByReference, Structure.ByValue {
+	public boolean hit;
+	public float distance;
+	public Vector3.ByValue position;
+	public Vector3.ByValue normal;
+
+	@Override
+	protected List<String> getFieldOrder() {
+		return Arrays.asList("hit", "distance", "position", "normal");
 	}
-
-	public final Unsigned8 hit = new Unsigned8();
-	public final Float distance = new Float();
-	public final StructRef<Vector3> position = new StructRef<Vector3>(Vector3.class);
-	public final StructRef<Vector3> normal = new StructRef<Vector3>(Vector3.class);
 }

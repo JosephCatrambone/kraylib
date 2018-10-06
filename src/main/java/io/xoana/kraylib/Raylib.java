@@ -2,15 +2,25 @@ package io.xoana.kraylib;
 
 import io.xoana.kraylib.graphics.*;
 import io.xoana.kraylib.math.*;
-import jnr.ffi.Pointer;
-import jnr.ffi.annotations.In;
-import jnr.ffi.annotations.Out;
-import jnr.ffi.byref.IntByReference;
-import jnr.ffi.types.u_int32_t;
+import com.sun.jna.*;
 
-import java.nio.Buffer;
+public interface Raylib extends Library {
+	Raylib INSTANCE = RaylibLoader.load();
+	/*
+	TODO:
+struct Mesh;            // Vertex data definning a mesh
+struct Shader;          // Shader type (generic shader)
+struct MaterialMap;     // Material texture map
+struct Material;        // Material type
+struct Model;           // Basic 3d Model type
+struct Ray;             // Ray type (useful for raycast)
+struct RayHitInfo;      // Raycast hit information
+struct Wave;            // Wave type, defines audio wave data
+struct Sound;           // Basic Sound source and buffer
+struct Music;           // Music type (file streaming from memory)
+struct AudioStream;     // Raw audio stream type
+	 */
 
-public interface Raylib {
 	// CORE:
 	void InitWindow(int width, int height, String title);
 	void CloseWindow();
@@ -18,8 +28,8 @@ public interface Raylib {
 	boolean WindowShouldClose();  // Check if KEY_ESCAPE pressed or Close icon pressed
 	boolean IsWindowMinimized();  // Check if window has been minimized (or lost focus)
 	void ToggleFullscreen();  // Toggle fullscreen mode (only PLATFORM_DESKTOP)
-	void SetWindowIcon(Image image);  // Set icon for window (only PLATFORM_DESKTOP)
-	void SetWindowTitle(String title);                                 // Set title for window (only PLATFORM_DESKTOP)
+	void SetWindowIcon(Image.ByValue image);  // Set icon for window (only PLATFORM_DESKTOP)
+	void SetWindowTitle(String title);  // Set title for window (only PLATFORM_DESKTOP)
 	void SetWindowPosition(int x, int y);                                   // Set window position on screen (only PLATFORM_DESKTOP)
 	void SetWindowMonitor(int monitor);                                     // Set monitor for the current window (fullscreen mode)
 	void SetWindowMinSize(int width, int height);                           // Set window minimum dimensions (for FLAG_WINDOW_RESIZABLE)
@@ -35,22 +45,21 @@ public interface Raylib {
 	void DisableCursor();                                               // Disables cursor (lock cursor)
 
 	// Drawing-related functions
-	void ClearBackground(@u_int32_t int color);
-	void ClearBackground(@In Color color);                                      // Set background color (framebuffer clear color)
+	void ClearBackground(Color.ByValue color);                                      // Set background color (framebuffer clear color)
 	void BeginDrawing();                                                // Setup canvas (framebuffer) to start drawing
 	void EndDrawing();                                                  // End canvas drawing and swap buffers (double buffering)
-	void BeginMode2D(@In Camera2D camera);                                      // Initialize 2D mode with custom camera (2D)
+	void BeginMode2D(Camera2D.ByValue camera);                                      // Initialize 2D mode with custom camera (2D)
 	void EndMode2D();                                                   // Ends 2D mode with custom camera
-	void BeginMode3D(@In Camera camera);                                      // Initializes 3D mode with custom camera (3D)
+	void BeginMode3D(Camera.ByValue camera);                                      // Initializes 3D mode with custom camera (3D)
 	void EndMode3D();                                                   // Ends 3D mode and returns to default 2D orthographic mode
-	void BeginTextureMode(RenderTexture2D target);                          // Initializes render texture for drawing
+	void BeginTextureMode(RenderTexture2D.ByValue target);                          // Initializes render texture for drawing
 	void EndTextureMode();                                              // Ends drawing to render texture
 
 
 	// Screen-space-related functions
-	Ray GetMouseRay(Vector2 mousePosition, Camera camera);                  // Returns a ray trace from mouse position
-	Vector2 GetWorldToScreen(Vector3 position, Camera camera);              // Returns the screen space position for a 3d world space position
-	Matrix GetCameraMatrix(Camera camera);                                  // Returns camera transform matrix (view matrix)
+	Ray GetMouseRay(Vector2.ByValue mousePosition, Camera.ByValue camera);                  // Returns a ray trace from mouse position
+	Vector2 GetWorldToScreen(Vector3.ByValue position, Camera.ByValue camera);              // Returns the screen space position for a 3d world space position
+	Matrix GetCameraMatrix(Camera.ByValue camera);                                  // Returns camera transform matrix (view matrix)
 
 	// Timing-related functions
 	void SetTargetFPS(int fps);                                             // Set target FPS (maximum)
@@ -59,11 +68,11 @@ public interface Raylib {
 	double GetTime();                                                   // Returns elapsed time in seconds since InitWindow()
 
 	// Color-related functions
-	int ColorToInt(Color color);                                            // Returns hexadecimal value for a Color
-	Vector4 ColorNormalize(Color color);                                    // Returns color normalized as float [0..1]
-	Vector3 ColorToHSV(Color color);                                        // Returns HSV values for a Color
+	int ColorToInt(Color.ByValue color);                                            // Returns hexadecimal value for a Color
+	Vector4 ColorNormalize(Color.ByValue color);                                    // Returns color normalized as float [0..1]
+	Vector3 ColorToHSV(Color.ByValue color);                                        // Returns HSV values for a Color
 	Color GetColor(int hexValue);                                           // Returns a Color struct from hexadecimal value
-	Color Fade(Color color, float alpha);                                   // Color fade-in or fade-out, alpha goes from 0.0f to 1.0f
+	Color Fade(Color.ByValue color, float alpha);                                   // Color fade-in or fade-out, alpha goes from 0.0f to 1.0f
 
 	// Misc. functions
 	void ShowLogo();                                                    // Activate raylib logo at startup (can be done with flags)
@@ -82,7 +91,7 @@ public interface Raylib {
 	boolean ChangeDirectory(String dir);                                  // Change working directory, returns true if success
 	boolean IsFileDropped();                                               // Check if a file has been dropped into window
 	// char **GetDroppedFiles(int *count)
-	Pointer GetDroppedFiles(@Out IntByReference count);                                     // Get dropped files names
+	Pointer GetDroppedFiles(int count);                                     // Get dropped files names
 	void ClearDroppedFiles();                                           // Clear dropped files paths buffer
 
 	// Persistent storage management
@@ -117,7 +126,7 @@ public interface Raylib {
 	int GetMouseX();                                                    // Returns mouse position X
 	int GetMouseY();                                                    // Returns mouse position Y
 	Vector2 GetMousePosition();                                         // Returns mouse position XY
-	void SetMousePosition(Vector2 position);                                // Set mouse position XY
+	void SetMousePosition(Vector2.ByValue position);                                // Set mouse position XY
 	int GetMouseWheelMove();                                            // Returns mouse wheel movement Y
 
 	// Input-related functions: touch
@@ -137,8 +146,8 @@ public interface Raylib {
 	float GetGesturePinchAngle();                                       // Get gesture pinch angle
 
 	// Camera-related functions
-	void SetCameraMode(Camera camera, int mode);                            // Set camera mode (multiple camera modes available)
-	void UpdateCamera(Camera camera);                                      // Update camera position for selected mode
+	void SetCameraMode(Camera.ByReference camera, int mode);                            // Set camera mode (multiple camera modes available)
+	void UpdateCamera(Camera.ByReference camera);                                      // Update camera position for selected mode
 	void SetCameraPanControl(int panKey);                                   // Set camera pan key to combine with mouse movement (free camera)
 	void SetCameraAltControl(int altKey);                                   // Set camera alt key to combine with mouse movement (free camera)
 	void SetCameraSmoothZoomControl(int szKey);                             // Set camera smooth zoom key to combine with mouse (free camera)
@@ -148,120 +157,120 @@ public interface Raylib {
 
 	// SHAPES
 	// Basic shapes drawing functions
-	void DrawPixel(int posX, int posY, Color color);                                                    // Draw a pixel
-	void DrawPixelV(Vector2 position, Color color);                                                     // Draw a pixel (Vector version)
-	void DrawLine(int startPosX, int startPosY, int endPosX, int endPosY, Color color);                 // Draw a line
-	void DrawLineV(Vector2 startPos, Vector2 endPos, Color color);                                      // Draw a line (Vector version)
-	void DrawLineEx(Vector2 startPos, Vector2 endPos, float thick, Color color);                        // Draw a line defining thickness
-	void DrawLineBezier(Vector2 startPos, Vector2 endPos, float thick, Color color);                    // Draw a line using cubic-bezier curves in-out
-	void DrawCircle(int centerX, int centerY, float radius, Color color);                               // Draw a color-filled circle
-	void DrawCircleGradient(int centerX, int centerY, float radius, Color color1, Color color2);        // Draw a gradient-filled circle
-	void DrawCircleV(Vector2 center, float radius, Color color);                                        // Draw a color-filled circle (Vector version)
-	void DrawCircleLines(int centerX, int centerY, float radius, Color color);                          // Draw circle outline
-	void DrawRectangle(int posX, int posY, int width, int height, Color color);                         // Draw a color-filled rectangle
-	void DrawRectangleV(Vector2 position, Vector2 size, Color color);                                   // Draw a color-filled rectangle (Vector version)
-	void DrawRectangleRec(Rectangle rec, Color color);                                                  // Draw a color-filled rectangle
-	void DrawRectanglePro(Rectangle rec, Vector2 origin, float rotation, Color color);                  // Draw a color-filled rectangle with pro parameters
-	void DrawRectangleGradientV(int posX, int posY, int width, int height, Color color1, Color color2); // Draw a vertical-gradient-filled rectangle
-	void DrawRectangleGradientH(int posX, int posY, int width, int height, Color color1, Color color2); // Draw a horizontal-gradient-filled rectangle
-	void DrawRectangleGradientEx(Rectangle rec, Color col1, Color col2, Color col3, Color col4);        // Draw a gradient-filled rectangle with custom vertex colors
-	void DrawRectangleLines(int posX, int posY, int width, int height, Color color);                    // Draw rectangle outline
-	void DrawRectangleLinesEx(Rectangle rec, int lineThick, Color color);                               // Draw rectangle outline with extended parameters
-	void DrawTriangle(Vector2 v1, Vector2 v2, Vector2 v3, Color color);                                 // Draw a color-filled triangle
-	void DrawTriangleLines(Vector2 v1, Vector2 v2, Vector2 v3, Color color);                            // Draw triangle outline
-	void DrawPoly(Vector2 center, int sides, float radius, float rotation, Color color);                // Draw a regular polygon (Vector version)
+	void DrawPixel(int posX, int posY, Color.ByValue color);                                                    // Draw a pixel
+	void DrawPixelV(Vector2.ByValue position, Color.ByValue color);                                                     // Draw a pixel (Vector version)
+	void DrawLine(int startPosX, int startPosY, int endPosX, int endPosY, Color.ByValue color);                 // Draw a line
+	void DrawLineV(Vector2.ByValue startPos, Vector2.ByValue endPos, Color.ByValue color);                                      // Draw a line (Vector version)
+	void DrawLineEx(Vector2.ByValue startPos, Vector2.ByValue endPos, float thick, Color.ByValue color);                        // Draw a line defining thickness
+	void DrawLineBezier(Vector2.ByValue startPos, Vector2.ByValue endPos, float thick, Color.ByValue color);                    // Draw a line using cubic-bezier curves in-out
+	void DrawCircle(int centerX, int centerY, float radius, Color.ByValue color);                               // Draw a color-filled circle
+	void DrawCircleGradient(int centerX, int centerY, float radius, Color.ByValue color1, Color.ByValue color2);        // Draw a gradient-filled circle
+	void DrawCircleV(Vector2.ByValue center, float radius, Color.ByValue color);                                        // Draw a color-filled circle (Vector version)
+	void DrawCircleLines(int centerX, int centerY, float radius, Color.ByValue color);                          // Draw circle outline
+	void DrawRectangle(int posX, int posY, int width, int height, Color.ByValue color);                         // Draw a color-filled rectangle
+	void DrawRectangleV(Vector2.ByValue position, Vector2.ByValue size, Color.ByValue color);                                   // Draw a color-filled rectangle (Vector version)
+	void DrawRectangleRec(Rectangle.ByValue rec, Color.ByValue color);                                                  // Draw a color-filled rectangle
+	void DrawRectanglePro(Rectangle.ByValue rec, Vector2.ByValue origin, float rotation, Color.ByValue color);                  // Draw a color-filled rectangle with pro parameters
+	void DrawRectangleGradientV(int posX, int posY, int width, int height, Color.ByValue color1, Color.ByValue color2); // Draw a vertical-gradient-filled rectangle
+	void DrawRectangleGradientH(int posX, int posY, int width, int height, Color.ByValue color1, Color.ByValue color2); // Draw a horizontal-gradient-filled rectangle
+	void DrawRectangleGradientEx(Rectangle.ByValue rec, Color.ByValue col1, Color.ByValue col2, Color.ByValue col3, Color.ByValue col4);        // Draw a gradient-filled rectangle with custom vertex colors
+	void DrawRectangleLines(int posX, int posY, int width, int height, Color.ByValue color);                    // Draw rectangle outline
+	void DrawRectangleLinesEx(Rectangle.ByValue rec, int lineThick, Color.ByValue color);                               // Draw rectangle outline with extended parameters
+	void DrawTriangle(Vector2.ByValue v1, Vector2.ByValue v2, Vector2.ByValue v3, Color.ByValue color);                                 // Draw a color-filled triangle
+	void DrawTriangleLines(Vector2.ByValue v1, Vector2.ByValue v2, Vector2.ByValue v3, Color.ByValue color);                            // Draw triangle outline
+	void DrawPoly(Vector2.ByValue center, int sides, float radius, float rotation, Color.ByValue color);                // Draw a regular polygon (Vector version)
 	//TODO: void DrawPolyEx(Vector2 *points, int numPoints, Color color);
-	void DrawPolyEx(Vector2[] points, int numPoints, Color color);                                       // Draw a closed polygon defined by points
+	void DrawPolyEx(Pointer points, int numPoints, Color.ByValue color);                                       // Draw a closed polygon defined by points
 	//TODO: void DrawPolyExLines(Vector2 *points, int numPoints, Color color);
-	void DrawPolyExLines(Vector2[] points, int numPoints, Color color);                                  // Draw polygon lines
+	void DrawPolyExLines(Pointer points, int numPoints, Color.ByValue color);                                  // Draw polygon lines
 
 	// Basic shapes collision detection functions
-	boolean CheckCollisionRecs(Rectangle rec1, Rectangle rec2);                                            // Check collision between two rectangles
-	boolean CheckCollisionCircles(Vector2 center1, float radius1, Vector2 center2, float radius2);         // Check collision between two circles
-	boolean CheckCollisionCircleRec(Vector2 center, float radius, Rectangle rec);                          // Check collision between circle and rectangle
-	Rectangle GetCollisionRec(Rectangle rec1, Rectangle rec2);                                          // Get collision rectangle for two rectangles collision
-	boolean CheckCollisionPointRec(Vector2 point, Rectangle rec);                                          // Check if point is inside rectangle
-	boolean CheckCollisionPointCircle(Vector2 point, Vector2 center, float radius);                        // Check if point is inside circle
-	boolean CheckCollisionPointTriangle(Vector2 point, Vector2 p1, Vector2 p2, Vector2 p3);                // Check if point is inside a triangle
+	boolean CheckCollisionRecs(Rectangle.ByValue rec1, Rectangle.ByValue rec2);                                            // Check collision between two rectangles
+	boolean CheckCollisionCircles(Vector2.ByValue center1, float radius1, Vector2.ByValue center2, float radius2);         // Check collision between two circles
+	boolean CheckCollisionCircleRec(Vector2.ByValue center, float radius, Rectangle.ByValue rec);                          // Check collision between circle and rectangle
+	Rectangle GetCollisionRec(Rectangle.ByValue rec1, Rectangle.ByValue rec2);                                          // Get collision rectangle for two rectangles collision
+	boolean CheckCollisionPointRec(Vector2.ByValue point, Rectangle.ByValue rec);                                          // Check if point is inside rectangle
+	boolean CheckCollisionPointCircle(Vector2.ByValue point, Vector2.ByValue center, float radius);                        // Check if point is inside circle
+	boolean CheckCollisionPointTriangle(Vector2.ByValue point, Vector2.ByValue p1, Vector2.ByValue p2, Vector2.ByValue p3);                // Check if point is inside a triangle
 
 	// TEXTURE
 	// Image/Texture2D data loading/unloading/saving functions
 	Image LoadImage(String fileName);  // Load image from file into CPU memory (RAM)
 	// Color*
-	Image LoadImageEx(Color[] pixels, int width, int height);  // Load image from Color array data (RGBA - 32bit)
+	Image LoadImageEx(Pointer pixels, int width, int height);  // Load image from Color array data (RGBA - 32bit)
 	// void*
-	Image LoadImagePro(Buffer data, int width, int height, int format);  // Load image from raw data with parameters
+	Image LoadImagePro(Pointer data, int width, int height, int format);  // Load image from raw data with parameters
 	Image LoadImageRaw(String fileName, int width, int height, int format, int headerSize);        // Load image from RAW file data
 	void ExportImage(String fileName, Image image);                                                // Export image as a PNG file
 	Texture2D LoadTexture(String fileName);                                                        // Load texture from file into GPU memory (VRAM)
-	Texture2D LoadTextureFromImage(Image image);                                                        // Load texture from image data
+	Texture2D LoadTextureFromImage(Image.ByValue image);                                                        // Load texture from image data
 	RenderTexture2D LoadRenderTexture(int width, int height);                                           // Load texture for rendering (framebuffer)
-	void UnloadImage(Image image);                                                                      // Unload image from CPU memory (RAM)
-	void UnloadTexture(Texture2D texture);                                                              // Unload texture from GPU memory (VRAM)
-	void UnloadRenderTexture(RenderTexture2D target);                                                   // Unload render texture from GPU memory (VRAM)
+	void UnloadImage(Image.ByReference image);                                                                      // Unload image from CPU memory (RAM)
+	void UnloadTexture(Texture2D.ByReference texture);                                                              // Unload texture from GPU memory (VRAM)
+	void UnloadRenderTexture(RenderTexture2D.ByReference target);                                                   // Unload render texture from GPU memory (VRAM)
 	// Color*
-	Pointer GetImageData(Image image);                                                                   // Get pixel data from image as a Color struct array
+	Pointer GetImageData(Image.ByValue image);                                                                   // Get pixel data from image as a Color struct array
 	// Vector4*
-	Pointer GetImageDataNormalized(Image image);                                                       // Get pixel data from image as Vector4 array (float normalized)
+	Pointer GetImageDataNormalized(Image.ByValue image);                                                       // Get pixel data from image as Vector4 array (float normalized)
 	int GetPixelDataSize(int width, int height, int format);                                            // Get pixel data size in bytes (image or texture)
-	Image GetTextureData(Texture2D texture);                                                            // Get pixel data from GPU texture and return an Image
-	void UpdateTexture(Texture2D texture, Buffer pixels);                                          // Update GPU texture with new data
+	Image GetTextureData(Texture2D.ByValue texture);                                                            // Get pixel data from GPU texture and return an Image
+	// TODO: Not sure if this is by value or reference.
+	void UpdateTexture(Texture2D.ByValue texture, Pointer pixels);                                          // Update GPU texture with new data
 
 	// Image manipulation functions
-	Image ImageCopy(@In Image image);                                                                       // Create an image duplicate (useful for transformations)
-	void ImageToPOT(Image image, Color fillColor);                                                     // Convert image to POT (power-of-two)
-	void ImageFormat(Image image, int newFormat);                                                      // Convert image data to desired format
-	void ImageAlphaMask(Image image, Image alphaMask);                                                 // Apply alpha mask to image
-	void ImageAlphaClear(Image image, Color color, float threshold);                                   // Clear alpha channel to desired color
-	void ImageAlphaCrop(Image image, float threshold);                                                 // Crop image depending on alpha value
-	void ImageAlphaPremultiply(Image image);                                                           // Premultiply alpha channel
-	void ImageCrop(Image image, Rectangle crop);                                                       // Crop an image to a defined rectangle
-	void ImageResize(Image image, int newWidth, int newHeight);                                        // Resize image (bilinear filtering)
-	void ImageResizeNN(Image image, int newWidth, int newHeight);                                       // Resize image (Nearest-Neighbor scaling algorithm)
-	void ImageResizeCanvas(Image image, int newWidth, int newHeight,
-						   int offsetX, int offsetY, Color color);                                      // Resize canvas and fill with color
-	void ImageMipmaps(Image image);                                                                    // Generate all mipmap levels for a provided image
-	void ImageDither(Image image, int rBpp, int gBpp, int bBpp, int aBpp);                             // Dither image data to 16bpp or lower (Floyd-Steinberg dithering)
-	Image ImageText(String text, int fontSize, Color color);                                       // Create an image from text (default font)
-	Image ImageTextEx(Font font, String text, float fontSize, float spacing, Color tint);          // Create an image from text (custom sprite font)
-	void ImageDraw(Image dst, Image src, Rectangle srcRec, Rectangle dstRec);                          // Draw a source image within a destination image
-	void ImageDrawRectangle(Image dst, Vector2 position, Rectangle rec, Color color);                  // Draw rectangle within an image
-	void ImageDrawText(Image dst, Vector2 position, String text, int fontSize, Color color);      // Draw text (default font) within an image (destination)
-	void ImageDrawTextEx(Image dst, Vector2 position, Font font, String text,
-						 float fontSize, float spacing, Color color);                                   // Draw text (custom sprite font) within an image (destination)
-	void ImageFlipVertical(Image image);                                                               // Flip image vertically
-	void ImageFlipHorizontal(Image image);                                                             // Flip image horizontally
-	void ImageRotateCW(Image image);                                                                   // Rotate image clockwise 90deg
-	void ImageRotateCCW(Image image);                                                                  // Rotate image counter-clockwise 90deg
-	void ImageColorTint(Image image, Color color);                                                     // Modify image color: tint
-	void ImageColorInvert(Image image);                                                                // Modify image color: invert
-	void ImageColorGrayscale(Image image);                                                             // Modify image color: grayscale
-	void ImageColorContrast(Image image, float contrast);                                              // Modify image color: contrast (-100 to 100)
-	void ImageColorBrightness(Image image, int brightness);                                            // Modify image color: brightness (-255 to 255)
-	void ImageColorReplace(Image image, Color color, Color replace);                                   // Modify image color: replace color
+	Image ImageCopy(Image.ByValue image);                                                                       // Create an image duplicate (useful for transformations)
+	void ImageToPOT(Image.ByValue image, Color.ByValue fillColor);                                                     // Convert image to POT (power-of-two)
+	void ImageFormat(Image.ByValue image, int newFormat);                                                      // Convert image data to desired format
+	void ImageAlphaMask(Image.ByValue image, Image.ByValue alphaMask);                                                 // Apply alpha mask to image
+	void ImageAlphaClear(Image.ByValue image, Color.ByValue color, float threshold);                                   // Clear alpha channel to desired color
+	void ImageAlphaCrop(Image.ByValue image, float threshold);                                                 // Crop image depending on alpha value
+	void ImageAlphaPremultiply(Image.ByValue image);                                                           // Premultiply alpha channel
+	void ImageCrop(Image.ByValue image, Rectangle.ByValue crop);                                                       // Crop an image to a defined rectangle
+	void ImageResize(Image.ByValue image, int newWidth, int newHeight);                                        // Resize image (bilinear filtering)
+	void ImageResizeNN(Image.ByValue image, int newWidth, int newHeight);                                       // Resize image (Nearest-Neighbor scaling algorithm)
+	void ImageResizeCanvas(Image.ByValue image, int newWidth, int newHeight,
+						   int offsetX, int offsetY, Color.ByValue color);                                      // Resize canvas and fill with color
+	void ImageMipmaps(Image.ByValue image);                                                                    // Generate all mipmap levels for a provided image
+	void ImageDither(Image.ByValue image, int rBpp, int gBpp, int bBpp, int aBpp);                             // Dither image data to 16bpp or lower (Floyd-Steinberg dithering)
+	Image ImageText(String text, int fontSize, Color.ByValue color);                                       // Create an image from text (default font)
+	Image ImageTextEx(Font.ByValue font, String text, float fontSize, float spacing, Color.ByValue tint);          // Create an image from text (custom sprite font)
+	void ImageDraw(Image.ByValue dst, Image.ByValue src, Rectangle.ByValue srcRec, Rectangle.ByValue dstRec);                          // Draw a source image within a destination image
+	void ImageDrawRectangle(Image.ByValue dst, Vector2.ByValue position, Rectangle.ByValue rec, Color.ByValue color);                  // Draw rectangle within an image
+	void ImageDrawText(Image.ByValue dst, Vector2.ByValue position, String text, int fontSize, Color.ByValue color);      // Draw text (default font) within an image (destination)
+	void ImageDrawTextEx(Image.ByValue dst, Vector2.ByValue position, Font.ByValue font, String text,
+						 float fontSize, float spacing, Color.ByValue color);                                   // Draw text (custom sprite font) within an image (destination)
+	void ImageFlipVertical(Image.ByValue image);                                                               // Flip image vertically
+	void ImageFlipHorizontal(Image.ByValue image);                                                             // Flip image horizontally
+	void ImageRotateCW(Image.ByValue image);                                                                   // Rotate image clockwise 90deg
+	void ImageRotateCCW(Image.ByValue image);                                                                  // Rotate image counter-clockwise 90deg
+	void ImageColorTint(Image.ByValue image, Color.ByValue color);                                                     // Modify image color: tint
+	void ImageColorInvert(Image.ByValue image);                                                                // Modify image color: invert
+	void ImageColorGrayscale(Image.ByValue image);                                                             // Modify image color: grayscale
+	void ImageColorContrast(Image.ByValue image, float contrast);                                              // Modify image color: contrast (-100 to 100)
+	void ImageColorBrightness(Image.ByValue image, int brightness);                                            // Modify image color: brightness (-255 to 255)
+	void ImageColorReplace(Image.ByValue image, Color.ByValue color, Color.ByValue replace);                                   // Modify image color: replace color
 
 	// Image generation functions
-	Image GenImageColor(int width, int height, Color color);                                            // Generate image: plain color
-	Image GenImageGradientV(int width, int height, Color top, Color bottom);                            // Generate image: vertical gradient
-	Image GenImageGradientH(int width, int height, Color left, Color right);                            // Generate image: horizontal gradient
-	Image GenImageGradientRadial(int width, int height, float density, Color inner, Color outer);       // Generate image: radial gradient
-	Image GenImageChecked(int width, int height, int checksX, int checksY, Color col1, Color col2);     // Generate image: checked
+	Image GenImageColor(int width, int height, Color.ByValue color);                                            // Generate image: plain color
+	Image GenImageGradientV(int width, int height, Color.ByValue top, Color.ByValue bottom);                            // Generate image: vertical gradient
+	Image GenImageGradientH(int width, int height, Color.ByValue left, Color.ByValue right);                            // Generate image: horizontal gradient
+	Image GenImageGradientRadial(int width, int height, float density, Color.ByValue inner, Color.ByValue outer);       // Generate image: radial gradient
+	Image GenImageChecked(int width, int height, int checksX, int checksY, Color.ByValue col1, Color.ByValue col2);     // Generate image: checked
 	Image GenImageWhiteNoise(int width, int height, float factor);                                      // Generate image: white noise
 	Image GenImagePerlinNoise(int width, int height, int offsetX, int offsetY, float scale);            // Generate image: perlin noise
 	Image GenImageCellular(int width, int height, int tileSize);                                        // Generate image: cellular algorithm. Bigger tileSize means bigger cells
 
 	// Texture2D configuration functions
-	void GenTextureMipmaps(Texture2D texture);                                                         // Generate GPU mipmaps for a texture
-	void SetTextureFilter(Texture2D texture, int filterMode);                                           // Set texture scaling filter mode
-	void SetTextureWrap(Texture2D texture, int wrapMode);                                               // Set texture wrapping mode
+	void GenTextureMipmaps(Texture2D.ByReference texture);                                                         // Generate GPU mipmaps for a texture
+	void SetTextureFilter(Texture2D.ByReference texture, int filterMode);                                           // Set texture scaling filter mode
+	void SetTextureWrap(Texture2D.ByReference texture, int wrapMode);                                               // Set texture wrapping mode
 
 	// Texture2D drawing functions
-	void DrawTexture(Texture2D texture, int posX, int posY, Color tint);                                // Draw a Texture2D
-	void DrawTextureV(Texture2D texture, Vector2 position, Color tint);                                 // Draw a Texture2D with position defined as Vector2
-	void DrawTextureEx(Texture2D texture, Vector2 position, float rotation, float scale, Color tint);   // Draw a Texture2D with extended parameters
-	void DrawTextureRec(Texture2D texture, Rectangle sourceRec, Vector2 position, Color tint);          // Draw a part of a texture defined by a rectangle
-	void DrawTexturePro(Texture2D texture, Rectangle sourceRec, Rectangle destRec, Vector2 origin,      // Draw a part of a texture defined by a rectangle with 'pro' parameters
-						float rotation, Color tint);
+	void DrawTexture(Texture2D.ByValue texture, int posX, int posY, Color.ByValue tint);  // Draw a Texture2D
+	void DrawTextureV(Texture2D.ByValue texture, Vector2.ByValue position, Color.ByValue tint);  // Draw a Texture2D with position defined as Vector2
+	void DrawTextureEx(Texture2D.ByValue texture, Vector2.ByValue position, float rotation, float scale, Color.ByValue tint);  // Draw a Texture2D with extended parameters
+	void DrawTextureRec(Texture2D.ByValue texture, Rectangle.ByValue sourceRec, Vector2.ByValue position, Color.ByValue tint);  // Draw a part of a texture defined by a rectangle
+	void DrawTexturePro(Texture2D.ByValue texture, Rectangle.ByValue sourceRec, Rectangle.ByValue destRec, Vector2.ByValue origin, float rotation, Color.ByValue tint);  // Draw a part of a texture defined by a rectangle with 'pro' parameters
 
 	// TEXT
 	// Font loading/unloading functions
@@ -269,20 +278,20 @@ public interface Raylib {
 	Font LoadFont(String fileName);                                                              // Load font from file into GPU memory (VRAM)
 	Font LoadFontEx(String fileName, int fontSize, int charsCount, int[] fontChars);              // Load font from file with extended parameters
 	//CharInfo *LoadFontData(String fileName, int fontSize, int *fontChars, int charsCount, boolean sdf); // Load font data for further use
-	Image GenImageFontAtlas(CharInfo[] chars, int fontSize, int charsCount, int padding, int packMethod);  // Generate image font atlas using chars info
-	void UnloadFont(Font font);                                                                       // Unload Font from GPU memory (VRAM)
+	Image GenImageFontAtlas(Pointer chars, int fontSize, int charsCount, int padding, int packMethod);  // Generate image font atlas using chars info
+	void UnloadFont(Font.ByReference font);                                                                       // Unload Font from GPU memory (VRAM)
 
 	// Text drawing functions
 	void DrawFPS(int posX, int posY);                                                                 // Shows current FPS
-	void DrawText(String text, int posX, int posY, int fontSize, Color color);                   // Draw text (using default font)
-	void DrawTextEx(Font font, String text, Vector2 position, float fontSize, float spacing, Color tint); // Draw text using font and additional parameters
+	void DrawText(String text, int posX, int posY, int fontSize, Color.ByValue color);                   // Draw text (using default font)
+	void DrawTextEx(Font.ByValue font, String text, Vector2.ByValue position, float fontSize, float spacing, Color.ByValue tint); // Draw text using font and additional parameters
 
 	// Text misc. functions
 	int MeasureText(String text, int fontSize);                                                  // Measure string width for default font
-	Vector2 MeasureTextEx(Font font, String text, float fontSize, float spacing);                // Measure string size for Font
+	Vector2 MeasureTextEx(Font.ByValue font, String text, float fontSize, float spacing);                // Measure string size for Font
     String FormatText(String... text);                                                    // Formatting of text with variables to 'embed'
     String SubText(String text, int position, int length);                                  // Get a piece of a text string
-	int GetGlyphIndex(Font font, int character);                                                      // Get index position for a unicode character on font
+	int GetGlyphIndex(Font.ByValue font, int character);                                                      // Get index position for a unicode character on font
 
 	/*
 	// MODELS

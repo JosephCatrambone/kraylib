@@ -1,16 +1,18 @@
 package io.xoana.kraylib.math;
 
-import jnr.ffi.Runtime;
-import jnr.ffi.Struct;
+import com.sun.jna.Structure;
 
-// TODO: This should be an alias for Vector4
-public class Quaternion extends Struct {
-	public Quaternion(Runtime runtime) {
-		super(runtime);
+import java.util.Arrays;
+import java.util.List;
+
+public class Quaternion extends Structure implements Structure.ByReference, Structure.ByValue {
+	public float x;
+	public float y;
+	public float z;
+	public float w;
+
+	@Override
+	protected List<String> getFieldOrder() {
+		return Arrays.asList("x", "y", "z", "w");
 	}
-
-	public final Float x = new Struct.Float();
-	public final Float y = new Struct.Float();
-	public final Float z = new Struct.Float();
-	public final Float w = new Struct.Float();
 }
