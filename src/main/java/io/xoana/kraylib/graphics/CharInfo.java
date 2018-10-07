@@ -14,7 +14,8 @@ public class CharInfo extends Structure implements Structure.ByReference, Struct
 	public int offsetX = 0;  // Character offset X when drawing
 	public int offsetY = 0;  // Character offset Y when drawing
 	public int advanceX = 0;  // Character advance position X
-	public Pointer data = null; //unsigned char *data;
+	// Does this have to be Pointer, or can it be byte[]?  I'm going to try byte[], but we might have bugs.
+	public byte[] data = null; //unsigned char *data;
 
 	@Override
 	protected List<String> getFieldOrder() {

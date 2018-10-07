@@ -17,17 +17,21 @@ public class Color extends Structure implements Structure.ByReference, Structure
 
 	public Color(int r, int g, int b, int a) {
 		// TODO: Assert if any are outside the range of 0-255.
-		this.r = (byte)(0xFF & r);
-		this.g = (byte)(0xFF & g);
-		this.b = (byte)(0xFF & b);
-		this.a = (byte)(0xFF & a);
+		set(r, g, b, a);
 	}
 
-	public Color() {
-		r = 0;
-		g = 0;
-		b = 0;
-		a = 0;
+	public Color(float r, float g, float b, float a) {
+		set((int)(255*r), (int)(255*g), (int)(255*b), (int)(255*a));
+	}
+
+	// Default init is zero.
+	public Color() {}
+
+	public void set(int r, int g, int b, int a) {
+		if(r != -1) { this.r = (byte)(r&0xFF); }
+		if(g != -1) { this.g = (byte)(g&0xFF); }
+		if(b != -1) { this.b = (byte)(b&0xFF); }
+		if(a != -1) { this.a = (byte)(a&0xFF); }
 	}
 
 	public int toInt() {
