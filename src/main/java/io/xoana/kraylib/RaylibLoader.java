@@ -13,7 +13,7 @@ public class RaylibLoader {
 	 */
 	public static Raylib load() {
 		// Pick the correct resource for our system.
-		String nativeLibrary = "/lib/windows64/libraylib_shared.dll"; // TODO: Multiplatform.
+		String nativeLibrary = "/lib/windows64/raylib_shared.dll"; // TODO: Multiplatform.
 		String nativeLibraryExtension = ".dll";
 		String nativeLibraryPrefix = ""; // Linux has "lib" prefix.
 

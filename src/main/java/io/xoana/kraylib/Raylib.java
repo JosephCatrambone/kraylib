@@ -8,13 +8,6 @@ public interface Raylib extends Library {
 	Raylib INSTANCE = RaylibLoader.load();
 	/*
 	TODO:
-struct Mesh;            // Vertex data definning a mesh
-struct Shader;          // Shader type (generic shader)
-struct MaterialMap;     // Material texture map
-struct Material;        // Material type
-struct Model;           // Basic 3d Model type
-struct Ray;             // Ray type (useful for raycast)
-struct RayHitInfo;      // Raycast hit information
 struct Wave;            // Wave type, defines audio wave data
 struct Sound;           // Basic Sound source and buffer
 struct Music;           // Music type (file streaming from memory)
