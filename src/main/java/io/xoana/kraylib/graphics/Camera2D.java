@@ -7,10 +7,10 @@ import io.xoana.kraylib.math.Vector2;
 import java.util.Arrays;
 import java.util.List;
 
-public class Camera2D extends Structure implements Structure.ByReference, Structure.ByValue {
+public class Camera2D extends Structure {
 
-	public Vector2.ByValue offset = new Vector2();
-	public Vector2.ByValue target = new Vector2();
+	public Vector2 offset = new Vector2();
+	public Vector2 target = new Vector2();
 	public float rotation;
 	public float zoom;
 

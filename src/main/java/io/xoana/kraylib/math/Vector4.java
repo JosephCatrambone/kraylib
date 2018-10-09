@@ -5,7 +5,7 @@ import com.sun.jna.Structure;
 import java.util.Arrays;
 import java.util.List;
 
-public class Vector4 extends Structure implements Structure.ByReference, Structure.ByValue {
+public class Vector4 extends Structure {
 	public float x;
 	public float y;
 	public float z;

@@ -4,7 +4,9 @@ import io.xoana.kraylib.graphics.*;
 import io.xoana.kraylib.math.Vector3;
 
 public class Main {
-	public static void main(String[] args) {
+
+	// Core Demos
+	public static void demo_3d_mode() {
 		Raylib raylib = Raylib.INSTANCE;
 		int screenWidth = 800;
 		int screenHeight = 450;
@@ -66,5 +68,9 @@ public class Main {
 		//--------------------------------------------------------------------------------------
 		raylib.CloseWindow();        // Close window and OpenGL context
 		//--------------------------------------------------------------------------------------
+	}
+
+	public static void main(String[] args) {
+		demo_3d_mode();
 	}
 }
