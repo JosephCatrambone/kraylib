@@ -13,6 +13,177 @@ struct Sound;           // Basic Sound source and buffer
 struct Music;           // Music type (file streaming from memory)
 struct AudioStream;     // Raw audio stream type
 	 */
+	
+	// Input literals.  Maybe make this a separate file?
+	// raylib Config Flags
+	public static final int FLAG_SHOW_LOGO = 1; // Set to show raylib logo at startup
+	public static final int FLAG_FULLSCREEN_MODE = 2; // Set to run program in fullscreen
+	public static final int FLAG_WINDOW_RESIZABLE = 4; // Set to allow resizable window
+	public static final int FLAG_WINDOW_UNDECORATED = 8; // Set to disable window decoration (frame and buttons)
+	public static final int FLAG_WINDOW_TRANSPARENT = 16; // Set to allow transparent window
+	public static final int FLAG_MSAA_4X_HINT = 32; // Set to try enabling MSAA 4X
+	public static final int FLAG_VSYNC_HINT = 64; // Set to try enabling V-Sync on GPU
+
+	// Keyboard Function Keys
+	public static final int KEY_SPACE=32;
+	public static final int KEY_ESCAPE=256;
+	public static final int KEY_ENTER= 257;
+	public static final int KEY_TAB= 258;
+	public static final int KEY_BACKSPACE= 259;
+	public static final int KEY_INSERT=260;
+	public static final int KEY_DELETE=261;
+	public static final int KEY_RIGHT= 262;
+	public static final int KEY_LEFT=263;
+	public static final int KEY_DOWN=264;
+	public static final int KEY_UP=265;
+	public static final int KEY_PAGE_UP= 266;
+	public static final int KEY_PAGE_DOWN= 267;
+	public static final int KEY_HOME=268;
+	public static final int KEY_END= 269;
+	public static final int KEY_CAPS_LOCK= 280;
+	public static final int KEY_SCROLL_LOCK= 281;
+	public static final int KEY_NUM_LOCK=282;
+	public static final int KEY_PRINT_SCREEN=283;
+	public static final int KEY_PAUSE= 284;
+	public static final int KEY_F1=290;
+	public static final int KEY_F2=291;
+	public static final int KEY_F3=292;
+	public static final int KEY_F4=293;
+	public static final int KEY_F5=294;
+	public static final int KEY_F6=295;
+	public static final int KEY_F7=296;
+	public static final int KEY_F8=297;
+	public static final int KEY_F9=298;
+	public static final int KEY_F10= 299;
+	public static final int KEY_F11= 300;
+	public static final int KEY_F12= 301;
+	public static final int KEY_LEFT_SHIFT=340;
+	public static final int KEY_LEFT_CONTROL=341;
+	public static final int KEY_LEFT_ALT=342;
+	public static final int KEY_RIGHT_SHIFT= 344;
+	public static final int KEY_RIGHT_CONTROL= 345;
+	public static final int KEY_RIGHT_ALT= 346;
+	public static final int KEY_GRAVE=96;
+	public static final int KEY_SLASH=47;
+	public static final int KEY_BACKSLASH=92;
+
+	// Keyboard Alpha Numeric Keys
+	public static final int KEY_ZERO= 48;
+	public static final int KEY_ONE=49;
+	public static final int KEY_TWO=50;
+	public static final int KEY_THREE=51;
+	public static final int KEY_FOUR= 52;
+	public static final int KEY_FIVE= 53;
+	public static final int KEY_SIX=54;
+	public static final int KEY_SEVEN=55;
+	public static final int KEY_EIGHT=56;
+	public static final int KEY_NINE= 57;
+	public static final int KEY_A=65;
+	public static final int KEY_B=66;
+	public static final int KEY_C=67;
+	public static final int KEY_D=68;
+	public static final int KEY_E=69;
+	public static final int KEY_F=70;
+	public static final int KEY_G=71;
+	public static final int KEY_H=72;
+	public static final int KEY_I=73;
+	public static final int KEY_J=74;
+	public static final int KEY_K=75;
+	public static final int KEY_L=76;
+	public static final int KEY_M=77;
+	public static final int KEY_N=78;
+	public static final int KEY_O=79;
+	public static final int KEY_P=80;
+	public static final int KEY_Q=81;
+	public static final int KEY_R=82;
+	public static final int KEY_S=83;
+	public static final int KEY_T=84;
+	public static final int KEY_U=85;
+	public static final int KEY_V=86;
+	public static final int KEY_W=87;
+	public static final int KEY_X=88;
+	public static final int KEY_Y=89;
+	public static final int KEY_Z=90;
+
+	// Android Physical Buttons
+	public static final int KEY_BACK=4;
+	public static final int KEY_MENU= 82;
+	public static final int KEY_VOLUME_UP=24;
+	public static final int KEY_VOLUME_DOWN=25;
+
+	// Mouse Buttons
+	public static final int MOUSE_LEFT_BUTTON= 0;
+	public static final int MOUSE_RIGHT_BUTTON=1;
+	public static final int MOUSE_MIDDLE_BUTTON= 2;
+
+	// Touch points registered
+	public static final int MAX_TOUCH_POINTS=2;
+
+	// Gamepad Number
+	public static final int GAMEPAD_PLAYER1= 0;
+	public static final int GAMEPAD_PLAYER2= 1;
+	public static final int GAMEPAD_PLAYER3= 2;
+	public static final int GAMEPAD_PLAYER4= 3;
+
+	// Gamepad Buttons/Axis
+
+	// PS3 USB Controller Buttons
+	public static final int GAMEPAD_PS3_BUTTON_TRIANGLE = 0;
+	public static final int GAMEPAD_PS3_BUTTON_CIRCLE= 1;
+	public static final int GAMEPAD_PS3_BUTTON_CROSS=2;
+	public static final int GAMEPAD_PS3_BUTTON_SQUARE= 3;
+	public static final int GAMEPAD_PS3_BUTTON_L1= 6;
+	public static final int GAMEPAD_PS3_BUTTON_R1= 7;
+	public static final int GAMEPAD_PS3_BUTTON_L2= 4;
+	public static final int GAMEPAD_PS3_BUTTON_R2= 5;
+	public static final int GAMEPAD_PS3_BUTTON_START=8;
+	public static final int GAMEPAD_PS3_BUTTON_SELECT= 9;
+	public static final int GAMEPAD_PS3_BUTTON_UP=24;
+	public static final int GAMEPAD_PS3_BUTTON_RIGHT= 25;
+	public static final int GAMEPAD_PS3_BUTTON_DOWN=26;
+	public static final int GAMEPAD_PS3_BUTTON_LEFT=27;
+	public static final int GAMEPAD_PS3_BUTTON_PS=12;
+
+	// PS3 USB Controller Axis
+	public static final int GAMEPAD_PS3_AXIS_LEFT_X= 0;
+	public static final int GAMEPAD_PS3_AXIS_LEFT_Y= 1;
+	public static final int GAMEPAD_PS3_AXIS_RIGHT_X=2;
+	public static final int GAMEPAD_PS3_AXIS_RIGHT_Y=5;
+	public static final int GAMEPAD_PS3_AXIS_L2= 3; // [1..-1] (pressure-level)
+	public static final int GAMEPAD_PS3_AXIS_R2= 4; // [1..-1] (pressure-level)
+
+	// Xbox360 USB Controller Buttons
+	public static final int GAMEPAD_XBOX_BUTTON_A= 0;
+	public static final int GAMEPAD_XBOX_BUTTON_B= 1;
+	public static final int GAMEPAD_XBOX_BUTTON_X= 2;
+	public static final int GAMEPAD_XBOX_BUTTON_Y= 3;
+	public static final int GAMEPAD_XBOX_BUTTON_LB=4;
+	public static final int GAMEPAD_XBOX_BUTTON_RB=5;
+	public static final int GAMEPAD_XBOX_BUTTON_SELECT=6;
+	public static final int GAMEPAD_XBOX_BUTTON_START= 7;
+	public static final int GAMEPAD_XBOX_BUTTON_UP=10;
+	public static final int GAMEPAD_XBOX_BUTTON_RIGHT= 11;
+	public static final int GAMEPAD_XBOX_BUTTON_DOWN=12;
+	public static final int GAMEPAD_XBOX_BUTTON_LEFT=13;
+	public static final int GAMEPAD_XBOX_BUTTON_HOME=8;
+
+	// Android Gamepad Controller (SNES CLASSIC)
+	public static final int GAMEPAD_ANDROID_DPAD_UP=19;
+	public static final int GAMEPAD_ANDROID_DPAD_DOWN=20;
+	public static final int GAMEPAD_ANDROID_DPAD_LEFT=21;
+	public static final int GAMEPAD_ANDROID_DPAD_RIGHT= 22;
+	public static final int GAMEPAD_ANDROID_DPAD_CENTER=23;
+
+	public static final int GAMEPAD_ANDROID_BUTTON_A= 96;
+	public static final int GAMEPAD_ANDROID_BUTTON_B= 97;
+	public static final int GAMEPAD_ANDROID_BUTTON_C= 98;
+	public static final int GAMEPAD_ANDROID_BUTTON_X= 99;
+	public static final int GAMEPAD_ANDROID_BUTTON_Y= 100;
+	public static final int GAMEPAD_ANDROID_BUTTON_Z= 101;
+	public static final int GAMEPAD_ANDROID_BUTTON_L1=102;
+	public static final int GAMEPAD_ANDROID_BUTTON_R1=103;
+	public static final int GAMEPAD_ANDROID_BUTTON_L2=104;
+	public static final int GAMEPAD_ANDROID_BUTTON_R2=105;
 
 	// CORE:
 	void InitWindow(int width, int height, String title);
@@ -139,8 +310,10 @@ struct AudioStream;     // Raw audio stream type
 	float GetGesturePinchAngle();                                       // Get gesture pinch angle
 
 	// Camera-related functions
-	void SetCameraMode(Camera.ByReference camera, int mode);                            // Set camera mode (multiple camera modes available)
-	void UpdateCamera(Camera.ByReference camera);                                      // Update camera position for selected mode
+	// Was Camera*.  Needed byReference?
+	void SetCameraMode(Camera camera, int mode);                            // Set camera mode (multiple camera modes available)
+	// Was Camera*.  Need ByReference?
+	void UpdateCamera(Camera camera);                                      // Update camera position for selected mode
 	void SetCameraPanControl(int panKey);                                   // Set camera pan key to combine with mouse movement (free camera)
 	void SetCameraAltControl(int altKey);                                   // Set camera alt key to combine with mouse movement (free camera)
 	void SetCameraSmoothZoomControl(int szKey);                             // Set camera smooth zoom key to combine with mouse (free camera)
