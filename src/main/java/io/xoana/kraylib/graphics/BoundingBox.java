@@ -7,8 +7,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class BoundingBox extends Structure implements Structure.ByReference, Structure.ByValue {
-	Vector3.ByValue min = new Vector3();
-	Vector3.ByValue max = new Vector3();
+	public Vector3 min = new Vector3();
+	public Vector3 max = new Vector3();
 
 	@Override
 	protected List<String> getFieldOrder() {

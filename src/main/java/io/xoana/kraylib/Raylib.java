@@ -43,16 +43,16 @@ struct AudioStream;     // Raw audio stream type
 	void EndDrawing();                                                  // End canvas drawing and swap buffers (double buffering)
 	void BeginMode2D(Camera2D.ByValue camera);                                      // Initialize 2D mode with custom camera (2D)
 	void EndMode2D();                                                   // Ends 2D mode with custom camera
-	void BeginMode3D(Camera.ByValue camera);                                      // Initializes 3D mode with custom camera (3D)
+	void BeginMode3D(Camera camera);                                      // Initializes 3D mode with custom camera (3D)
 	void EndMode3D();                                                   // Ends 3D mode and returns to default 2D orthographic mode
 	void BeginTextureMode(RenderTexture2D.ByValue target);                          // Initializes render texture for drawing
 	void EndTextureMode();                                              // Ends drawing to render texture
 
 
 	// Screen-space-related functions
-	Ray GetMouseRay(Vector2.ByValue mousePosition, Camera.ByValue camera);                  // Returns a ray trace from mouse position
-	Vector2 GetWorldToScreen(Vector3.ByValue position, Camera.ByValue camera);              // Returns the screen space position for a 3d world space position
-	Matrix GetCameraMatrix(Camera.ByValue camera);                                  // Returns camera transform matrix (view matrix)
+	Ray GetMouseRay(Vector2.ByValue mousePosition, Camera camera);                  // Returns a ray trace from mouse position
+	Vector2 GetWorldToScreen(Vector3 position, Camera camera);              // Returns the screen space position for a 3d world space position
+	Matrix GetCameraMatrix(Camera camera);                                  // Returns camera transform matrix (view matrix)
 
 	// Timing-related functions
 	void SetTargetFPS(int fps);                                             // Set target FPS (maximum)
@@ -288,25 +288,25 @@ struct AudioStream;     // Raw audio stream type
 
 	// MODELS
 	// Basic geometric 3D shapes drawing functions
-	void DrawLine3D(Vector3.ByValue startPos, Vector3.ByValue endPos, Color.ByValue color);                                     // Draw a line in 3D world space
-	void DrawCircle3D(Vector3.ByValue center, float radius, Vector3.ByValue rotationAxis,
+	void DrawLine3D(Vector3 startPos, Vector3 endPos, Color.ByValue color);                                     // Draw a line in 3D world space
+	void DrawCircle3D(Vector3 center, float radius, Vector3 rotationAxis,
 					  float rotationAngle, Color.ByValue color);                                                // Draw a circle in 3D world space
-	void DrawCube(Vector3.ByValue position, float width, float height, float length, Color.ByValue color);              // Draw cube
-	void DrawCubeV(Vector3.ByValue position, Vector3.ByValue size, Color.ByValue color);                                        // Draw cube (Vector version)
-	void DrawCubeWires(Vector3.ByValue position, float width, float height, float length, Color.ByValue color);         // Draw cube wires
+	void DrawCube(Vector3 position, float width, float height, float length, Color.ByValue color);              // Draw cube
+	void DrawCubeV(Vector3 position, Vector3 size, Color.ByValue color);                                        // Draw cube (Vector version)
+	void DrawCubeWires(Vector3 position, float width, float height, float length, Color.ByValue color);         // Draw cube wires
 	void DrawCubeTexture(Texture2D.ByValue texture, Vector3 position, float width,
 						 float height, float length, Color.ByValue color);                                      // Draw cube textured
-	void DrawSphere(Vector3.ByValue centerPos, float radius, Color.ByValue color);                                      // Draw sphere
-	void DrawSphereEx(Vector3.ByValue centerPos, float radius, int rings, int slices, Color.ByValue color);             // Draw sphere with extended parameters
-	void DrawSphereWires(Vector3.ByValue centerPos, float radius, int rings, int slices, Color.ByValue color);          // Draw sphere wires
-	void DrawCylinder(Vector3.ByValue position, float radiusTop, float radiusBottom,
+	void DrawSphere(Vector3 centerPos, float radius, Color.ByValue color);                                      // Draw sphere
+	void DrawSphereEx(Vector3 centerPos, float radius, int rings, int slices, Color.ByValue color);             // Draw sphere with extended parameters
+	void DrawSphereWires(Vector3 centerPos, float radius, int rings, int slices, Color.ByValue color);          // Draw sphere wires
+	void DrawCylinder(Vector3 position, float radiusTop, float radiusBottom,
 					  float height, int slices, Color.ByValue color);                                           // Draw a cylinder/cone
-	void DrawCylinderWires(Vector3.ByValue position, float radiusTop, float radiusBottom,
+	void DrawCylinderWires(Vector3 position, float radiusTop, float radiusBottom,
 						   float height, int slices, Color.ByValue color);                                      // Draw a cylinder/cone wires
-	void DrawPlane(Vector3.ByValue centerPos, Vector2.ByValue size, Color.ByValue color);                                       // Draw a plane XZ
+	void DrawPlane(Vector3 centerPos, Vector2.ByValue size, Color.ByValue color);                                       // Draw a plane XZ
 	void DrawRay(Ray.ByValue ray, Color.ByValue color);                                                                 // Draw a ray line
 	void DrawGrid(int slices, float spacing);                                                           // Draw a grid (centered at (0, 0, 0))
-	void DrawGizmo(Vector3.ByValue position);                                                                   // Draw simple gizmo
+	void DrawGizmo(Vector3 position);                                                                   // Draw simple gizmo
 
 	// Model loading/unloading functions
 	Model LoadModel(String fileName);                                                              // Load model from files (mesh and material)
@@ -331,8 +331,8 @@ struct AudioStream;     // Raw audio stream type
 	Mesh GenMeshCylinder(float radius, float height, int slices);                                       // Generate cylinder mesh
 	Mesh GenMeshTorus(float radius, float size, int radSeg, int sides);                                 // Generate torus mesh
 	Mesh GenMeshKnot(float radius, float size, int radSeg, int sides);                                  // Generate trefoil knot mesh
-	Mesh GenMeshHeightmap(Image.ByValue heightmap, Vector3.ByValue size);                                               // Generate heightmap mesh from image data
-	Mesh GenMeshCubicmap(Image.ByValue cubicmap, Vector3.ByValue cubeSize);                                             // Generate cubes-based map mesh from image data
+	Mesh GenMeshHeightmap(Image.ByValue heightmap, Vector3 size);                                               // Generate heightmap mesh from image data
+	Mesh GenMeshCubicmap(Image.ByValue cubicmap, Vector3 cubeSize);                                             // Generate cubes-based map mesh from image data
 
 	// Material loading/unloading functions
 	Material LoadMaterial(String fileName);                                                        // Load material from file
@@ -340,26 +340,26 @@ struct AudioStream;     // Raw audio stream type
 	void UnloadMaterial(Material.ByValue material);                                                             // Unload material from GPU memory (VRAM)
 
 	// Model drawing functions
-	void DrawModel(Model.ByValue model, Vector3.ByValue position, float scale, Color.ByValue tint);                             // Draw a model (with texture if set)
-	void DrawModelEx(Model.ByValue model, Vector3.ByValue position, Vector3.ByValue rotationAxis,
-					 float rotationAngle, Vector3.ByValue scale, Color.ByValue tint);                                   // Draw a model with extended parameters
-	void DrawModelWires(Model.ByValue model, Vector3.ByValue position, float scale, Color.ByValue tint);                        // Draw a model wires (with texture if set)
-	void DrawModelWiresEx(Model.ByValue model, Vector3.ByValue position, Vector3.ByValue rotationAxis,
-						  float rotationAngle, Vector3.ByValue scale, Color.ByValue tint);                              // Draw a model wires
+	void DrawModel(Model.ByValue model, Vector3 position, float scale, Color.ByValue tint);                             // Draw a model (with texture if set)
+	void DrawModelEx(Model.ByValue model, Vector3 position, Vector3 rotationAxis,
+					 float rotationAngle, Vector3 scale, Color.ByValue tint);                                   // Draw a model with extended parameters
+	void DrawModelWires(Model.ByValue model, Vector3 position, float scale, Color.ByValue tint);                        // Draw a model wires (with texture if set)
+	void DrawModelWiresEx(Model.ByValue model, Vector3 position, Vector3 rotationAxis,
+						  float rotationAngle, Vector3 scale, Color.ByValue tint);                              // Draw a model wires
 	void DrawBoundingBox(BoundingBox.ByValue box, Color.ByValue color);                                                 // Draw bounding box (wires)
-	void DrawBillboard(Camera.ByValue camera, Texture2D.ByValue texture, Vector3.ByValue center, float size, Color.ByValue tint);       // Draw a billboard texture
-	void DrawBillboardRec(Camera.ByValue camera, Texture2D.ByValue texture, Rectangle.ByValue sourceRec,
-						  Vector3.ByValue center, float size, Color.ByValue tint);                                      // Draw a billboard texture defined by sourceRec
+	void DrawBillboard(Camera camera, Texture2D.ByValue texture, Vector3 center, float size, Color.ByValue tint);       // Draw a billboard texture
+	void DrawBillboardRec(Camera camera, Texture2D.ByValue texture, Rectangle.ByValue sourceRec,
+						  Vector3 center, float size, Color.ByValue tint);                                      // Draw a billboard texture defined by sourceRec
 
 	// Collision detection functions
-	boolean CheckCollisionSpheres(Vector3.ByValue centerA, float radiusA, Vector3.ByValue centerB, float radiusB);                     // Detect collision between two spheres
-	boolean CheckCollisionBoxes(Vector3.ByValue minBBox1, Vector3.ByValue maxBBox1, Vector3.ByValue minBBox2, Vector3.ByValue maxBBox2);               // Detect collision between two boxes
-	boolean CheckCollisionBoxSphere(Vector3.ByValue minBBox, Vector3.ByValue maxBBox, Vector3.ByValue centerSphere, float radiusSphere);       // Detect collision between box and sphere
-	boolean CheckCollisionRaySphere(Ray.ByValue ray, Vector3.ByValue spherePosition, float sphereRadius);                              // Detect collision between ray and sphere
-	boolean CheckCollisionRaySphereEx(Ray.ByValue ray, Vector3.ByValue spherePosition, float sphereRadius, Vector3.ByReference collisionPoint);   // Detect collision between ray and sphere ex.
-	boolean CheckCollisionRayBox(Ray.ByValue ray, Vector3.ByValue minBBox, Vector3.ByValue maxBBox);                                           // Detect collision between ray and box
+	boolean CheckCollisionSpheres(Vector3 centerA, float radiusA, Vector3 centerB, float radiusB);                     // Detect collision between two spheres
+	boolean CheckCollisionBoxes(Vector3 minBBox1, Vector3 maxBBox1, Vector3 minBBox2, Vector3 maxBBox2);               // Detect collision between two boxes
+	boolean CheckCollisionBoxSphere(Vector3 minBBox, Vector3 maxBBox, Vector3 centerSphere, float radiusSphere);       // Detect collision between box and sphere
+	boolean CheckCollisionRaySphere(Ray.ByValue ray, Vector3 spherePosition, float sphereRadius);                              // Detect collision between ray and sphere
+	boolean CheckCollisionRaySphereEx(Ray.ByValue ray, Vector3 spherePosition, float sphereRadius, Vector3.ByReference collisionPoint);   // Detect collision between ray and sphere ex.
+	boolean CheckCollisionRayBox(Ray.ByValue ray, Vector3 minBBox, Vector3 maxBBox);                                           // Detect collision between ray and box
 	RayHitInfo GetCollisionRayModel(Ray.ByValue ray, Model.ByReference model);                                             // Get collision info between ray and model
-	RayHitInfo GetCollisionRayTriangle(Ray.ByValue ray, Vector3.ByValue p1, Vector3.ByValue p2, Vector3.ByValue p3);                    // Get collision info between ray and triangle
+	RayHitInfo GetCollisionRayTriangle(Ray.ByValue ray, Vector3 p1, Vector3 p2, Vector3 p3);                    // Get collision info between ray and triangle
 	RayHitInfo GetCollisionRayGround(Ray.ByValue ray, float groundHeight);                                      // Get collision info between ray and ground plane (Y-normal plane)
 
 	// SHADERS

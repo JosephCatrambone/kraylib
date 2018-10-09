@@ -10,7 +10,7 @@ import java.util.List;
 
 public class CharInfo extends Structure implements Structure.ByReference, Structure.ByValue {
 	public int value = 0;  // Character value (Unicode)
-	public Rectangle.ByValue rec = new Rectangle();
+	public Rectangle rec = new Rectangle();
 	public int offsetX = 0;  // Character offset X when drawing
 	public int offsetY = 0;  // Character offset Y when drawing
 	public int advanceX = 0;  // Character advance position X
