@@ -192,7 +192,7 @@ struct AudioStream;     // Raw audio stream type
 	boolean WindowShouldClose();  // Check if KEY_ESCAPE pressed or Close icon pressed
 	boolean IsWindowMinimized();  // Check if window has been minimized (or lost focus)
 	void ToggleFullscreen();  // Toggle fullscreen mode (only PLATFORM_DESKTOP)
-	void SetWindowIcon(Image.ByValue image);  // Set icon for window (only PLATFORM_DESKTOP)
+	void SetWindowIcon(Image image);  // Set icon for window (only PLATFORM_DESKTOP)
 	void SetWindowTitle(String title);  // Set title for window (only PLATFORM_DESKTOP)
 	void SetWindowPosition(int x, int y);                                   // Set window position on screen (only PLATFORM_DESKTOP)
 	void SetWindowMonitor(int monitor);                                     // Set monitor for the current window (fullscreen mode)
@@ -209,19 +209,19 @@ struct AudioStream;     // Raw audio stream type
 	void DisableCursor();                                               // Disables cursor (lock cursor)
 
 	// Drawing-related functions
-	void ClearBackground(Color.ByValue color);                                      // Set background color (framebuffer clear color)
+	void ClearBackground(Color color);                                      // Set background color (framebuffer clear color)
 	void BeginDrawing();                                                // Setup canvas (framebuffer) to start drawing
 	void EndDrawing();                                                  // End canvas drawing and swap buffers (double buffering)
-	void BeginMode2D(Camera2D.ByValue camera);                                      // Initialize 2D mode with custom camera (2D)
+	void BeginMode2D(Camera2D camera);                                      // Initialize 2D mode with custom camera (2D)
 	void EndMode2D();                                                   // Ends 2D mode with custom camera
 	void BeginMode3D(Camera camera);                                      // Initializes 3D mode with custom camera (3D)
 	void EndMode3D();                                                   // Ends 3D mode and returns to default 2D orthographic mode
-	void BeginTextureMode(RenderTexture2D.ByValue target);                          // Initializes render texture for drawing
+	void BeginTextureMode(RenderTexture2D target);                          // Initializes render texture for drawing
 	void EndTextureMode();                                              // Ends drawing to render texture
 
 
 	// Screen-space-related functions
-	Ray GetMouseRay(Vector2.ByValue mousePosition, Camera camera);                  // Returns a ray trace from mouse position
+	Ray GetMouseRay(Vector2 mousePosition, Camera camera);                  // Returns a ray trace from mouse position
 	Vector2 GetWorldToScreen(Vector3 position, Camera camera);              // Returns the screen space position for a 3d world space position
 	Matrix GetCameraMatrix(Camera camera);                                  // Returns camera transform matrix (view matrix)
 
@@ -232,11 +232,11 @@ struct AudioStream;     // Raw audio stream type
 	double GetTime();                                                   // Returns elapsed time in seconds since InitWindow()
 
 	// Color-related functions
-	int ColorToInt(Color.ByValue color);                                            // Returns hexadecimal value for a Color
-	Vector4 ColorNormalize(Color.ByValue color);                                    // Returns color normalized as float [0..1]
-	Vector3 ColorToHSV(Color.ByValue color);                                        // Returns HSV values for a Color
+	int ColorToInt(Color color);                                            // Returns hexadecimal value for a Color
+	Vector4 ColorNormalize(Color color);                                    // Returns color normalized as float [0..1]
+	Vector3 ColorToHSV(Color color);                                        // Returns HSV values for a Color
 	Color GetColor(int hexValue);                                           // Returns a Color struct from hexadecimal value
-	Color Fade(Color.ByValue color, float alpha);                                   // Color fade-in or fade-out, alpha goes from 0.0f to 1.0f
+	Color Fade(Color color, float alpha);                                   // Color fade-in or fade-out, alpha goes from 0.0f to 1.0f
 
 	// Misc. functions
 	void ShowLogo();                                                    // Activate raylib logo at startup (can be done with flags)
@@ -289,8 +289,8 @@ struct AudioStream;     // Raw audio stream type
 	boolean IsMouseButtonUp(int button);                                       // Detect if a mouse button is NOT being pressed
 	int GetMouseX();                                                    // Returns mouse position X
 	int GetMouseY();                                                    // Returns mouse position Y
-	Vector2 GetMousePosition();                                         // Returns mouse position XY
-	void SetMousePosition(Vector2.ByValue position);                                // Set mouse position XY
+	Vector2.ByValue GetMousePosition();                                         // Returns mouse position XY
+	void SetMousePosition(Vector2 position);                                // Set mouse position XY
 	int GetMouseWheelMove();                                            // Returns mouse wheel movement Y
 
 	// Input-related functions: touch
@@ -323,41 +323,41 @@ struct AudioStream;     // Raw audio stream type
 
 	// SHAPES
 	// Basic shapes drawing functions
-	void DrawPixel(int posX, int posY, Color.ByValue color);                                                    // Draw a pixel
-	void DrawPixelV(Vector2.ByValue position, Color.ByValue color);                                                     // Draw a pixel (Vector version)
-	void DrawLine(int startPosX, int startPosY, int endPosX, int endPosY, Color.ByValue color);                 // Draw a line
-	void DrawLineV(Vector2.ByValue startPos, Vector2.ByValue endPos, Color.ByValue color);                                      // Draw a line (Vector version)
-	void DrawLineEx(Vector2.ByValue startPos, Vector2.ByValue endPos, float thick, Color.ByValue color);                        // Draw a line defining thickness
-	void DrawLineBezier(Vector2.ByValue startPos, Vector2.ByValue endPos, float thick, Color.ByValue color);                    // Draw a line using cubic-bezier curves in-out
-	void DrawCircle(int centerX, int centerY, float radius, Color.ByValue color);                               // Draw a color-filled circle
-	void DrawCircleGradient(int centerX, int centerY, float radius, Color.ByValue color1, Color.ByValue color2);        // Draw a gradient-filled circle
-	void DrawCircleV(Vector2.ByValue center, float radius, Color.ByValue color);                                        // Draw a color-filled circle (Vector version)
-	void DrawCircleLines(int centerX, int centerY, float radius, Color.ByValue color);                          // Draw circle outline
-	void DrawRectangle(int posX, int posY, int width, int height, Color.ByValue color);                         // Draw a color-filled rectangle
-	void DrawRectangleV(Vector2.ByValue position, Vector2.ByValue size, Color.ByValue color);                                   // Draw a color-filled rectangle (Vector version)
-	void DrawRectangleRec(Rectangle.ByValue rec, Color.ByValue color);                                                  // Draw a color-filled rectangle
-	void DrawRectanglePro(Rectangle.ByValue rec, Vector2.ByValue origin, float rotation, Color.ByValue color);                  // Draw a color-filled rectangle with pro parameters
-	void DrawRectangleGradientV(int posX, int posY, int width, int height, Color.ByValue color1, Color.ByValue color2); // Draw a vertical-gradient-filled rectangle
-	void DrawRectangleGradientH(int posX, int posY, int width, int height, Color.ByValue color1, Color.ByValue color2); // Draw a horizontal-gradient-filled rectangle
-	void DrawRectangleGradientEx(Rectangle.ByValue rec, Color.ByValue col1, Color.ByValue col2, Color.ByValue col3, Color.ByValue col4);        // Draw a gradient-filled rectangle with custom vertex colors
-	void DrawRectangleLines(int posX, int posY, int width, int height, Color.ByValue color);                    // Draw rectangle outline
-	void DrawRectangleLinesEx(Rectangle.ByValue rec, int lineThick, Color.ByValue color);                               // Draw rectangle outline with extended parameters
-	void DrawTriangle(Vector2.ByValue v1, Vector2.ByValue v2, Vector2.ByValue v3, Color.ByValue color);                                 // Draw a color-filled triangle
-	void DrawTriangleLines(Vector2.ByValue v1, Vector2.ByValue v2, Vector2.ByValue v3, Color.ByValue color);                            // Draw triangle outline
-	void DrawPoly(Vector2.ByValue center, int sides, float radius, float rotation, Color.ByValue color);                // Draw a regular polygon (Vector version)
+	void DrawPixel(int posX, int posY, Color color);                                                    // Draw a pixel
+	void DrawPixelV(Vector2 position, Color color);                                                     // Draw a pixel (Vector version)
+	void DrawLine(int startPosX, int startPosY, int endPosX, int endPosY, Color color);                 // Draw a line
+	void DrawLineV(Vector2 startPos, Vector2 endPos, Color color);                                      // Draw a line (Vector version)
+	void DrawLineEx(Vector2 startPos, Vector2 endPos, float thick, Color color);                        // Draw a line defining thickness
+	void DrawLineBezier(Vector2 startPos, Vector2 endPos, float thick, Color color);                    // Draw a line using cubic-bezier curves in-out
+	void DrawCircle(int centerX, int centerY, float radius, Color color);                               // Draw a color-filled circle
+	void DrawCircleGradient(int centerX, int centerY, float radius, Color color1, Color color2);        // Draw a gradient-filled circle
+	void DrawCircleV(Vector2 center, float radius, Color color);                                        // Draw a color-filled circle (Vector version)
+	void DrawCircleLines(int centerX, int centerY, float radius, Color color);                          // Draw circle outline
+	void DrawRectangle(int posX, int posY, int width, int height, Color color);                         // Draw a color-filled rectangle
+	void DrawRectangleV(Vector2 position, Vector2 size, Color color);                                   // Draw a color-filled rectangle (Vector version)
+	void DrawRectangleRec(Rectangle rec, Color color);                                                  // Draw a color-filled rectangle
+	void DrawRectanglePro(Rectangle rec, Vector2 origin, float rotation, Color color);                  // Draw a color-filled rectangle with pro parameters
+	void DrawRectangleGradientV(int posX, int posY, int width, int height, Color color1, Color color2); // Draw a vertical-gradient-filled rectangle
+	void DrawRectangleGradientH(int posX, int posY, int width, int height, Color color1, Color color2); // Draw a horizontal-gradient-filled rectangle
+	void DrawRectangleGradientEx(Rectangle rec, Color col1, Color col2, Color col3, Color col4);        // Draw a gradient-filled rectangle with custom vertex colors
+	void DrawRectangleLines(int posX, int posY, int width, int height, Color color);                    // Draw rectangle outline
+	void DrawRectangleLinesEx(Rectangle rec, int lineThick, Color color);                               // Draw rectangle outline with extended parameters
+	void DrawTriangle(Vector2 v1, Vector2 v2, Vector2 v3, Color color);                                 // Draw a color-filled triangle
+	void DrawTriangleLines(Vector2 v1, Vector2 v2, Vector2 v3, Color color);                            // Draw triangle outline
+	void DrawPoly(Vector2 center, int sides, float radius, float rotation, Color color);                // Draw a regular polygon (Vector version)
 	//TODO: void DrawPolyEx(Vector2 *points, int numPoints, Color color);
-	void DrawPolyEx(Pointer points, int numPoints, Color.ByValue color);                                       // Draw a closed polygon defined by points
+	void DrawPolyEx(Pointer points, int numPoints, Color color);                                       // Draw a closed polygon defined by points
 	//TODO: void DrawPolyExLines(Vector2 *points, int numPoints, Color color);
-	void DrawPolyExLines(Pointer points, int numPoints, Color.ByValue color);                                  // Draw polygon lines
+	void DrawPolyExLines(Pointer points, int numPoints, Color color);                                  // Draw polygon lines
 
 	// Basic shapes collision detection functions
-	boolean CheckCollisionRecs(Rectangle.ByValue rec1, Rectangle.ByValue rec2);                                            // Check collision between two rectangles
-	boolean CheckCollisionCircles(Vector2.ByValue center1, float radius1, Vector2.ByValue center2, float radius2);         // Check collision between two circles
-	boolean CheckCollisionCircleRec(Vector2.ByValue center, float radius, Rectangle.ByValue rec);                          // Check collision between circle and rectangle
-	Rectangle GetCollisionRec(Rectangle.ByValue rec1, Rectangle.ByValue rec2);                                          // Get collision rectangle for two rectangles collision
-	boolean CheckCollisionPointRec(Vector2.ByValue point, Rectangle.ByValue rec);                                          // Check if point is inside rectangle
-	boolean CheckCollisionPointCircle(Vector2.ByValue point, Vector2.ByValue center, float radius);                        // Check if point is inside circle
-	boolean CheckCollisionPointTriangle(Vector2.ByValue point, Vector2.ByValue p1, Vector2.ByValue p2, Vector2.ByValue p3);                // Check if point is inside a triangle
+	boolean CheckCollisionRecs(Rectangle rec1, Rectangle rec2);                                            // Check collision between two rectangles
+	boolean CheckCollisionCircles(Vector2 center1, float radius1, Vector2 center2, float radius2);         // Check collision between two circles
+	boolean CheckCollisionCircleRec(Vector2 center, float radius, Rectangle rec);                          // Check collision between circle and rectangle
+	Rectangle GetCollisionRec(Rectangle rec1, Rectangle rec2);                                          // Get collision rectangle for two rectangles collision
+	boolean CheckCollisionPointRec(Vector2 point, Rectangle rec);                                          // Check if point is inside rectangle
+	boolean CheckCollisionPointCircle(Vector2 point, Vector2 center, float radius);                        // Check if point is inside circle
+	boolean CheckCollisionPointTriangle(Vector2 point, Vector2 p1, Vector2 p2, Vector2 p3);                // Check if point is inside a triangle
 
 	// TEXTURE
 	// Image/Texture2D data loading/unloading/saving functions
@@ -369,59 +369,59 @@ struct AudioStream;     // Raw audio stream type
 	Image LoadImageRaw(String fileName, int width, int height, int format, int headerSize);        // Load image from RAW file data
 	void ExportImage(String fileName, Image image);                                                // Export image as a PNG file
 	Texture2D LoadTexture(String fileName);                                                        // Load texture from file into GPU memory (VRAM)
-	Texture2D LoadTextureFromImage(Image.ByValue image);                                                        // Load texture from image data
+	Texture2D LoadTextureFromImage(Image image);                                                        // Load texture from image data
 	RenderTexture2D LoadRenderTexture(int width, int height);                                           // Load texture for rendering (framebuffer)
 	void UnloadImage(Image.ByReference image);                                                                      // Unload image from CPU memory (RAM)
 	void UnloadTexture(Texture2D.ByReference texture);                                                              // Unload texture from GPU memory (VRAM)
 	void UnloadRenderTexture(RenderTexture2D.ByReference target);                                                   // Unload render texture from GPU memory (VRAM)
 	// Color*
-	Pointer GetImageData(Image.ByValue image);                                                                   // Get pixel data from image as a Color struct array
+	Pointer GetImageData(Image image);                                                                   // Get pixel data from image as a Color struct array
 	// Vector4*
-	Pointer GetImageDataNormalized(Image.ByValue image);                                                       // Get pixel data from image as Vector4 array (float normalized)
+	Pointer GetImageDataNormalized(Image image);                                                       // Get pixel data from image as Vector4 array (float normalized)
 	int GetPixelDataSize(int width, int height, int format);                                            // Get pixel data size in bytes (image or texture)
-	Image GetTextureData(Texture2D.ByValue texture);                                                            // Get pixel data from GPU texture and return an Image
+	Image GetTextureData(Texture2D texture);                                                            // Get pixel data from GPU texture and return an Image
 	// TODO: Not sure if this is by value or reference.
-	void UpdateTexture(Texture2D.ByValue texture, Pointer pixels);                                          // Update GPU texture with new data
+	void UpdateTexture(Texture2D texture, Pointer pixels);                                          // Update GPU texture with new data
 
 	// Image manipulation functions
-	Image ImageCopy(Image.ByValue image);                                                                       // Create an image duplicate (useful for transformations)
-	void ImageToPOT(Image.ByValue image, Color.ByValue fillColor);                                                     // Convert image to POT (power-of-two)
-	void ImageFormat(Image.ByValue image, int newFormat);                                                      // Convert image data to desired format
-	void ImageAlphaMask(Image.ByValue image, Image.ByValue alphaMask);                                                 // Apply alpha mask to image
-	void ImageAlphaClear(Image.ByValue image, Color.ByValue color, float threshold);                                   // Clear alpha channel to desired color
-	void ImageAlphaCrop(Image.ByValue image, float threshold);                                                 // Crop image depending on alpha value
-	void ImageAlphaPremultiply(Image.ByValue image);                                                           // Premultiply alpha channel
-	void ImageCrop(Image.ByValue image, Rectangle.ByValue crop);                                                       // Crop an image to a defined rectangle
-	void ImageResize(Image.ByValue image, int newWidth, int newHeight);                                        // Resize image (bilinear filtering)
-	void ImageResizeNN(Image.ByValue image, int newWidth, int newHeight);                                       // Resize image (Nearest-Neighbor scaling algorithm)
-	void ImageResizeCanvas(Image.ByValue image, int newWidth, int newHeight,
-						   int offsetX, int offsetY, Color.ByValue color);                                      // Resize canvas and fill with color
-	void ImageMipmaps(Image.ByValue image);                                                                    // Generate all mipmap levels for a provided image
-	void ImageDither(Image.ByValue image, int rBpp, int gBpp, int bBpp, int aBpp);                             // Dither image data to 16bpp or lower (Floyd-Steinberg dithering)
-	Image ImageText(String text, int fontSize, Color.ByValue color);                                       // Create an image from text (default font)
-	Image ImageTextEx(Font.ByValue font, String text, float fontSize, float spacing, Color.ByValue tint);          // Create an image from text (custom sprite font)
-	void ImageDraw(Image.ByValue dst, Image.ByValue src, Rectangle.ByValue srcRec, Rectangle.ByValue dstRec);                          // Draw a source image within a destination image
-	void ImageDrawRectangle(Image.ByValue dst, Vector2.ByValue position, Rectangle.ByValue rec, Color.ByValue color);                  // Draw rectangle within an image
-	void ImageDrawText(Image.ByValue dst, Vector2.ByValue position, String text, int fontSize, Color.ByValue color);      // Draw text (default font) within an image (destination)
-	void ImageDrawTextEx(Image.ByValue dst, Vector2.ByValue position, Font.ByValue font, String text,
-						 float fontSize, float spacing, Color.ByValue color);                                   // Draw text (custom sprite font) within an image (destination)
-	void ImageFlipVertical(Image.ByValue image);                                                               // Flip image vertically
-	void ImageFlipHorizontal(Image.ByValue image);                                                             // Flip image horizontally
-	void ImageRotateCW(Image.ByValue image);                                                                   // Rotate image clockwise 90deg
-	void ImageRotateCCW(Image.ByValue image);                                                                  // Rotate image counter-clockwise 90deg
-	void ImageColorTint(Image.ByValue image, Color.ByValue color);                                                     // Modify image color: tint
-	void ImageColorInvert(Image.ByValue image);                                                                // Modify image color: invert
-	void ImageColorGrayscale(Image.ByValue image);                                                             // Modify image color: grayscale
-	void ImageColorContrast(Image.ByValue image, float contrast);                                              // Modify image color: contrast (-100 to 100)
-	void ImageColorBrightness(Image.ByValue image, int brightness);                                            // Modify image color: brightness (-255 to 255)
-	void ImageColorReplace(Image.ByValue image, Color.ByValue color, Color.ByValue replace);                                   // Modify image color: replace color
+	Image ImageCopy(Image image);                                                                       // Create an image duplicate (useful for transformations)
+	void ImageToPOT(Image image, Color fillColor);                                                     // Convert image to POT (power-of-two)
+	void ImageFormat(Image image, int newFormat);                                                      // Convert image data to desired format
+	void ImageAlphaMask(Image image, Image alphaMask);                                                 // Apply alpha mask to image
+	void ImageAlphaClear(Image image, Color color, float threshold);                                   // Clear alpha channel to desired color
+	void ImageAlphaCrop(Image image, float threshold);                                                 // Crop image depending on alpha value
+	void ImageAlphaPremultiply(Image image);                                                           // Premultiply alpha channel
+	void ImageCrop(Image image, Rectangle crop);                                                       // Crop an image to a defined rectangle
+	void ImageResize(Image image, int newWidth, int newHeight);                                        // Resize image (bilinear filtering)
+	void ImageResizeNN(Image image, int newWidth, int newHeight);                                       // Resize image (Nearest-Neighbor scaling algorithm)
+	void ImageResizeCanvas(Image image, int newWidth, int newHeight,
+						   int offsetX, int offsetY, Color color);                                      // Resize canvas and fill with color
+	void ImageMipmaps(Image image);                                                                    // Generate all mipmap levels for a provided image
+	void ImageDither(Image image, int rBpp, int gBpp, int bBpp, int aBpp);                             // Dither image data to 16bpp or lower (Floyd-Steinberg dithering)
+	Image ImageText(String text, int fontSize, Color color);                                       // Create an image from text (default font)
+	Image ImageTextEx(Font font, String text, float fontSize, float spacing, Color tint);          // Create an image from text (custom sprite font)
+	void ImageDraw(Image dst, Image src, Rectangle srcRec, Rectangle dstRec);                          // Draw a source image within a destination image
+	void ImageDrawRectangle(Image dst, Vector2 position, Rectangle rec, Color color);                  // Draw rectangle within an image
+	void ImageDrawText(Image dst, Vector2 position, String text, int fontSize, Color color);      // Draw text (default font) within an image (destination)
+	void ImageDrawTextEx(Image dst, Vector2 position, Font font, String text,
+						 float fontSize, float spacing, Color color);                                   // Draw text (custom sprite font) within an image (destination)
+	void ImageFlipVertical(Image image);                                                               // Flip image vertically
+	void ImageFlipHorizontal(Image image);                                                             // Flip image horizontally
+	void ImageRotateCW(Image image);                                                                   // Rotate image clockwise 90deg
+	void ImageRotateCCW(Image image);                                                                  // Rotate image counter-clockwise 90deg
+	void ImageColorTint(Image image, Color color);                                                     // Modify image color: tint
+	void ImageColorInvert(Image image);                                                                // Modify image color: invert
+	void ImageColorGrayscale(Image image);                                                             // Modify image color: grayscale
+	void ImageColorContrast(Image image, float contrast);                                              // Modify image color: contrast (-100 to 100)
+	void ImageColorBrightness(Image image, int brightness);                                            // Modify image color: brightness (-255 to 255)
+	void ImageColorReplace(Image image, Color color, Color replace);                                   // Modify image color: replace color
 
 	// Image generation functions
-	Image GenImageColor(int width, int height, Color.ByValue color);                                            // Generate image: plain color
-	Image GenImageGradientV(int width, int height, Color.ByValue top, Color.ByValue bottom);                            // Generate image: vertical gradient
-	Image GenImageGradientH(int width, int height, Color.ByValue left, Color.ByValue right);                            // Generate image: horizontal gradient
-	Image GenImageGradientRadial(int width, int height, float density, Color.ByValue inner, Color.ByValue outer);       // Generate image: radial gradient
-	Image GenImageChecked(int width, int height, int checksX, int checksY, Color.ByValue col1, Color.ByValue col2);     // Generate image: checked
+	Image GenImageColor(int width, int height, Color color);                                            // Generate image: plain color
+	Image GenImageGradientV(int width, int height, Color top, Color bottom);                            // Generate image: vertical gradient
+	Image GenImageGradientH(int width, int height, Color left, Color right);                            // Generate image: horizontal gradient
+	Image GenImageGradientRadial(int width, int height, float density, Color inner, Color outer);       // Generate image: radial gradient
+	Image GenImageChecked(int width, int height, int checksX, int checksY, Color col1, Color col2);     // Generate image: checked
 	Image GenImageWhiteNoise(int width, int height, float factor);                                      // Generate image: white noise
 	Image GenImagePerlinNoise(int width, int height, int offsetX, int offsetY, float scale);            // Generate image: perlin noise
 	Image GenImageCellular(int width, int height, int tileSize);                                        // Generate image: cellular algorithm. Bigger tileSize means bigger cells
@@ -432,11 +432,11 @@ struct AudioStream;     // Raw audio stream type
 	void SetTextureWrap(Texture2D.ByReference texture, int wrapMode);                                               // Set texture wrapping mode
 
 	// Texture2D drawing functions
-	void DrawTexture(Texture2D.ByValue texture, int posX, int posY, Color.ByValue tint);  // Draw a Texture2D
-	void DrawTextureV(Texture2D.ByValue texture, Vector2.ByValue position, Color.ByValue tint);  // Draw a Texture2D with position defined as Vector2
-	void DrawTextureEx(Texture2D.ByValue texture, Vector2.ByValue position, float rotation, float scale, Color.ByValue tint);  // Draw a Texture2D with extended parameters
-	void DrawTextureRec(Texture2D.ByValue texture, Rectangle.ByValue sourceRec, Vector2.ByValue position, Color.ByValue tint);  // Draw a part of a texture defined by a rectangle
-	void DrawTexturePro(Texture2D.ByValue texture, Rectangle.ByValue sourceRec, Rectangle.ByValue destRec, Vector2.ByValue origin, float rotation, Color.ByValue tint);  // Draw a part of a texture defined by a rectangle with 'pro' parameters
+	void DrawTexture(Texture2D texture, int posX, int posY, Color tint);  // Draw a Texture2D
+	void DrawTextureV(Texture2D texture, Vector2 position, Color tint);  // Draw a Texture2D with position defined as Vector2
+	void DrawTextureEx(Texture2D texture, Vector2 position, float rotation, float scale, Color tint);  // Draw a Texture2D with extended parameters
+	void DrawTextureRec(Texture2D texture, Rectangle sourceRec, Vector2 position, Color tint);  // Draw a part of a texture defined by a rectangle
+	void DrawTexturePro(Texture2D texture, Rectangle sourceRec, Rectangle destRec, Vector2 origin, float rotation, Color tint);  // Draw a part of a texture defined by a rectangle with 'pro' parameters
 
 	// TEXT
 	// Font loading/unloading functions
@@ -449,50 +449,50 @@ struct AudioStream;     // Raw audio stream type
 
 	// Text drawing functions
 	void DrawFPS(int posX, int posY);                                                                 // Shows current FPS
-	void DrawText(String text, int posX, int posY, int fontSize, Color.ByValue color);                   // Draw text (using default font)
-	void DrawTextEx(Font.ByValue font, String text, Vector2.ByValue position, float fontSize, float spacing, Color.ByValue tint); // Draw text using font and additional parameters
+	void DrawText(String text, int posX, int posY, int fontSize, Color color);                   // Draw text (using default font)
+	void DrawTextEx(Font font, String text, Vector2 position, float fontSize, float spacing, Color tint); // Draw text using font and additional parameters
 
 	// Text misc. functions
 	int MeasureText(String text, int fontSize);                                                  // Measure string width for default font
-	Vector2 MeasureTextEx(Font.ByValue font, String text, float fontSize, float spacing);                // Measure string size for Font
+	Vector2 MeasureTextEx(Font font, String text, float fontSize, float spacing);                // Measure string size for Font
     String FormatText(String... text);                                                    // Formatting of text with variables to 'embed'
     String SubText(String text, int position, int length);                                  // Get a piece of a text string
-	int GetGlyphIndex(Font.ByValue font, int character);                                                      // Get index position for a unicode character on font
+	int GetGlyphIndex(Font font, int character);                                                      // Get index position for a unicode character on font
 
 	// MODELS
 	// Basic geometric 3D shapes drawing functions
-	void DrawLine3D(Vector3 startPos, Vector3 endPos, Color.ByValue color);                                     // Draw a line in 3D world space
+	void DrawLine3D(Vector3 startPos, Vector3 endPos, Color color);                                     // Draw a line in 3D world space
 	void DrawCircle3D(Vector3 center, float radius, Vector3 rotationAxis,
-					  float rotationAngle, Color.ByValue color);                                                // Draw a circle in 3D world space
-	void DrawCube(Vector3 position, float width, float height, float length, Color.ByValue color);              // Draw cube
-	void DrawCubeV(Vector3 position, Vector3 size, Color.ByValue color);                                        // Draw cube (Vector version)
-	void DrawCubeWires(Vector3 position, float width, float height, float length, Color.ByValue color);         // Draw cube wires
-	void DrawCubeTexture(Texture2D.ByValue texture, Vector3 position, float width,
-						 float height, float length, Color.ByValue color);                                      // Draw cube textured
-	void DrawSphere(Vector3 centerPos, float radius, Color.ByValue color);                                      // Draw sphere
-	void DrawSphereEx(Vector3 centerPos, float radius, int rings, int slices, Color.ByValue color);             // Draw sphere with extended parameters
-	void DrawSphereWires(Vector3 centerPos, float radius, int rings, int slices, Color.ByValue color);          // Draw sphere wires
+					  float rotationAngle, Color color);                                                // Draw a circle in 3D world space
+	void DrawCube(Vector3 position, float width, float height, float length, Color color);              // Draw cube
+	void DrawCubeV(Vector3 position, Vector3 size, Color color);                                        // Draw cube (Vector version)
+	void DrawCubeWires(Vector3 position, float width, float height, float length, Color color);         // Draw cube wires
+	void DrawCubeTexture(Texture2D texture, Vector3 position, float width,
+						 float height, float length, Color color);                                      // Draw cube textured
+	void DrawSphere(Vector3 centerPos, float radius, Color color);                                      // Draw sphere
+	void DrawSphereEx(Vector3 centerPos, float radius, int rings, int slices, Color color);             // Draw sphere with extended parameters
+	void DrawSphereWires(Vector3 centerPos, float radius, int rings, int slices, Color color);          // Draw sphere wires
 	void DrawCylinder(Vector3 position, float radiusTop, float radiusBottom,
-					  float height, int slices, Color.ByValue color);                                           // Draw a cylinder/cone
+					  float height, int slices, Color color);                                           // Draw a cylinder/cone
 	void DrawCylinderWires(Vector3 position, float radiusTop, float radiusBottom,
-						   float height, int slices, Color.ByValue color);                                      // Draw a cylinder/cone wires
-	void DrawPlane(Vector3 centerPos, Vector2.ByValue size, Color.ByValue color);                                       // Draw a plane XZ
-	void DrawRay(Ray.ByValue ray, Color.ByValue color);                                                                 // Draw a ray line
+						   float height, int slices, Color color);                                      // Draw a cylinder/cone wires
+	void DrawPlane(Vector3 centerPos, Vector2 size, Color color);                                       // Draw a plane XZ
+	void DrawRay(Ray ray, Color color);                                                                 // Draw a ray line
 	void DrawGrid(int slices, float spacing);                                                           // Draw a grid (centered at (0, 0, 0))
 	void DrawGizmo(Vector3 position);                                                                   // Draw simple gizmo
 
 	// Model loading/unloading functions
 	Model LoadModel(String fileName);                                                              // Load model from files (mesh and material)
-	Model LoadModelFromMesh(Mesh.ByValue mesh);                                                                 // Load model from generated mesh
-	void UnloadModel(Model.ByValue model);                                                                      // Unload model from memory (RAM and/or VRAM)
+	Model LoadModelFromMesh(Mesh mesh);                                                                 // Load model from generated mesh
+	void UnloadModel(Model model);                                                                      // Unload model from memory (RAM and/or VRAM)
 
 	// Mesh loading/unloading functions
 	Mesh LoadMesh(String fileName);                                                                // Load mesh from file
 	void UnloadMesh(Mesh.ByReference mesh);                                                                        // Unload mesh from memory (RAM and/or VRAM)
-	void ExportMesh(String fileName, Mesh.ByValue mesh);                                                   // Export mesh as an OBJ file
+	void ExportMesh(String fileName, Mesh mesh);                                                   // Export mesh as an OBJ file
 
 	// Mesh manipulation functions
-	BoundingBox MeshBoundingBox(Mesh.ByValue mesh);                                                             // Compute mesh bounding box limits
+	BoundingBox MeshBoundingBox(Mesh mesh);                                                             // Compute mesh bounding box limits
 	void MeshTangents(Mesh.ByReference mesh);                                                                      // Compute mesh tangents
 	void MeshBinormals(Mesh.ByReference mesh);                                                                     // Compute mesh binormals
 
@@ -504,36 +504,36 @@ struct AudioStream;     // Raw audio stream type
 	Mesh GenMeshCylinder(float radius, float height, int slices);                                       // Generate cylinder mesh
 	Mesh GenMeshTorus(float radius, float size, int radSeg, int sides);                                 // Generate torus mesh
 	Mesh GenMeshKnot(float radius, float size, int radSeg, int sides);                                  // Generate trefoil knot mesh
-	Mesh GenMeshHeightmap(Image.ByValue heightmap, Vector3 size);                                               // Generate heightmap mesh from image data
-	Mesh GenMeshCubicmap(Image.ByValue cubicmap, Vector3 cubeSize);                                             // Generate cubes-based map mesh from image data
+	Mesh GenMeshHeightmap(Image heightmap, Vector3 size);                                               // Generate heightmap mesh from image data
+	Mesh GenMeshCubicmap(Image cubicmap, Vector3 cubeSize);                                             // Generate cubes-based map mesh from image data
 
 	// Material loading/unloading functions
 	Material LoadMaterial(String fileName);                                                        // Load material from file
 	Material LoadMaterialDefault();                                                                 // Load default material (Supports: DIFFUSE, SPECULAR, NORMAL maps)
-	void UnloadMaterial(Material.ByValue material);                                                             // Unload material from GPU memory (VRAM)
+	void UnloadMaterial(Material material);                                                             // Unload material from GPU memory (VRAM)
 
 	// Model drawing functions
-	void DrawModel(Model.ByValue model, Vector3 position, float scale, Color.ByValue tint);                             // Draw a model (with texture if set)
-	void DrawModelEx(Model.ByValue model, Vector3 position, Vector3 rotationAxis,
-					 float rotationAngle, Vector3 scale, Color.ByValue tint);                                   // Draw a model with extended parameters
-	void DrawModelWires(Model.ByValue model, Vector3 position, float scale, Color.ByValue tint);                        // Draw a model wires (with texture if set)
-	void DrawModelWiresEx(Model.ByValue model, Vector3 position, Vector3 rotationAxis,
-						  float rotationAngle, Vector3 scale, Color.ByValue tint);                              // Draw a model wires
-	void DrawBoundingBox(BoundingBox.ByValue box, Color.ByValue color);                                                 // Draw bounding box (wires)
-	void DrawBillboard(Camera camera, Texture2D.ByValue texture, Vector3 center, float size, Color.ByValue tint);       // Draw a billboard texture
-	void DrawBillboardRec(Camera camera, Texture2D.ByValue texture, Rectangle.ByValue sourceRec,
-						  Vector3 center, float size, Color.ByValue tint);                                      // Draw a billboard texture defined by sourceRec
+	void DrawModel(Model model, Vector3 position, float scale, Color tint);                             // Draw a model (with texture if set)
+	void DrawModelEx(Model model, Vector3 position, Vector3 rotationAxis,
+					 float rotationAngle, Vector3 scale, Color tint);                                   // Draw a model with extended parameters
+	void DrawModelWires(Model model, Vector3 position, float scale, Color tint);                        // Draw a model wires (with texture if set)
+	void DrawModelWiresEx(Model model, Vector3 position, Vector3 rotationAxis,
+						  float rotationAngle, Vector3 scale, Color tint);                              // Draw a model wires
+	void DrawBoundingBox(BoundingBox box, Color color);                                                 // Draw bounding box (wires)
+	void DrawBillboard(Camera camera, Texture2D texture, Vector3 center, float size, Color tint);       // Draw a billboard texture
+	void DrawBillboardRec(Camera camera, Texture2D texture, Rectangle sourceRec,
+						  Vector3 center, float size, Color tint);                                      // Draw a billboard texture defined by sourceRec
 
 	// Collision detection functions
 	boolean CheckCollisionSpheres(Vector3 centerA, float radiusA, Vector3 centerB, float radiusB);                     // Detect collision between two spheres
 	boolean CheckCollisionBoxes(Vector3 minBBox1, Vector3 maxBBox1, Vector3 minBBox2, Vector3 maxBBox2);               // Detect collision between two boxes
 	boolean CheckCollisionBoxSphere(Vector3 minBBox, Vector3 maxBBox, Vector3 centerSphere, float radiusSphere);       // Detect collision between box and sphere
-	boolean CheckCollisionRaySphere(Ray.ByValue ray, Vector3 spherePosition, float sphereRadius);                              // Detect collision between ray and sphere
-	boolean CheckCollisionRaySphereEx(Ray.ByValue ray, Vector3 spherePosition, float sphereRadius, Vector3.ByReference collisionPoint);   // Detect collision between ray and sphere ex.
-	boolean CheckCollisionRayBox(Ray.ByValue ray, Vector3 minBBox, Vector3 maxBBox);                                           // Detect collision between ray and box
-	RayHitInfo GetCollisionRayModel(Ray.ByValue ray, Model.ByReference model);                                             // Get collision info between ray and model
-	RayHitInfo GetCollisionRayTriangle(Ray.ByValue ray, Vector3 p1, Vector3 p2, Vector3 p3);                    // Get collision info between ray and triangle
-	RayHitInfo GetCollisionRayGround(Ray.ByValue ray, float groundHeight);                                      // Get collision info between ray and ground plane (Y-normal plane)
+	boolean CheckCollisionRaySphere(Ray ray, Vector3 spherePosition, float sphereRadius);                              // Detect collision between ray and sphere
+	boolean CheckCollisionRaySphereEx(Ray ray, Vector3 spherePosition, float sphereRadius, Vector3.ByReference collisionPoint);   // Detect collision between ray and sphere ex.
+	boolean CheckCollisionRayBox(Ray ray, Vector3 minBBox, Vector3 maxBBox);                                           // Detect collision between ray and box
+	RayHitInfo GetCollisionRayModel(Ray ray, Model.ByReference model);                                             // Get collision info between ray and model
+	RayHitInfo GetCollisionRayTriangle(Ray ray, Vector3 p1, Vector3 p2, Vector3 p3);                    // Get collision info between ray and triangle
+	RayHitInfo GetCollisionRayGround(Ray ray, float groundHeight);                                      // Get collision info between ray and ground plane (Y-normal plane)
 
 	// SHADERS
 	// Shader loading/unloading functions

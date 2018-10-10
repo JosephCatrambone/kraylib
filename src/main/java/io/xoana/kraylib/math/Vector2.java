@@ -9,8 +9,11 @@ public class Vector2 extends Structure {
 	public float x;
 	public float y;
 
-	//public class ByReference extends Color implements Structure.ByReference {}
-	//public class ByValue extends Color implements Structure.ByValue {}
+	public class ByReference extends Vector2 implements Structure.ByReference {}
+	public class ByValue extends Vector2 implements Structure.ByValue {
+		public ByValue(){};
+		public ByValue(float x, float y) { super(x, y); }
+	}
 
 	public Vector2(float x, float y) {
 		this.x = x;
